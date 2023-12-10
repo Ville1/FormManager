@@ -1,0 +1,28 @@
+﻿@using Microsoft.AspNetCore.Http
+@using System.Collections
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width" />
+    <title>@FormManager.Resources.Localization.FormManagerTitle</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <script>
+        var localization = {
+        @foreach (DictionaryEntry entry in FormManager.Resources.Localization.ResourceManager.GetResourceSet(System.Globalization.CultureInfo.CurrentUICulture, true, true) ?? throw new Exception("Missing localization resources")) {
+            @:@entry.Key.ToString(): '@Html.Raw(entry.Value)',
+        }
+        };
+        var baseUrl = '@Html.Raw(string.Format("{0}://{1}", Context.Request.Scheme, Context.Request.Host))';
+    </script>
+    <div>
+        @RenderBody()
+    </div>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+</body>
+</html>

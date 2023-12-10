@@ -1,0 +1,19 @@
+﻿Install Node.js
+
+Left click on FormManager project -> Open in terminal
+Run following commands:
+npm install react react-dom
+npm install webpack webpack-cli
+npm install --save-dev @babel/preset-react
+npm install --save-dev babel-loader @babel/core
+
+Not sure if this is needed:
+Install tools from FormManager/.config/dotnet-tools.json with
+Click Tools -> NuGet Package Manager -> Package Manager Console
+Run command
+dotnet tool ...
+
+
+Update db
+Package Manager Console
+dotnet ef database update --context Database
