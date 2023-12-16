@@ -123,6 +123,12 @@
   <data name="FormManagerTitle" xml:space="preserve">
     <value>Lomakehallinta</value>
   </data>
+  <data name="Forms" xml:space="preserve">
+    <value>Lomakkeet</value>
+  </data>
+  <data name="FrontPageTitle" xml:space="preserve">
+    <value>Etusivu</value>
+  </data>
   <data name="InvalidCredentialsMessage" xml:space="preserve">
     <value>Virheellinen sähköposti tai salasana</value>
   </data>
@@ -131,6 +137,9 @@
   </data>
   <data name="Login" xml:space="preserve">
     <value>Kirjaudu sisään</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Kirjaudu ulos</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Salasana</value>

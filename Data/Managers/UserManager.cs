@@ -2,31 +2,18 @@
 
 namespace FormManager.Data.Managers
 {
-    public class UserManager
+    public class UserManager : ManagerBase<User>
     {
-        private readonly Database database;
-        private readonly ManagerBase<User> manager;
-
-
-        public UserManager(Database database)
-        {
-            this.database = database;
-            manager = new ManagerBase<User>(database.Users);
-        }
-
-        public User? Get(Guid id)
-        {
-            return manager.Get(id);
-        }
+        public UserManager(Database database) : base(database, database.Users) { }
 
         public bool CanLogIn(string email, string password)
         {
-            return database.Users.Any(user => user.Email == email && user.Password == password);
+            return Exists(user => user.Email == email && user.Password == password);
         }
 
         public User GetLoginUser(string email, string password)
         {
-            return database.Users.First(user => user.Email == email && user.Password == password);
+            return Get(user => user.Email == email && user.Password == password);
         }
     }
 }

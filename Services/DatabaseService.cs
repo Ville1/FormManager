@@ -12,10 +12,25 @@ namespace FormManager.Services
             this.context = context;
         }
 
+        private UserManager? users;
         public UserManager Users
         {
             get {
-                return new UserManager(context);
+                if(users == null) {
+                    users = new UserManager(context);
+                }
+                return users;
+            }
+        }
+
+        private LogManager? log;
+        public LogManager Log
+        {
+            get {
+                if (log == null) {
+                    log = new LogManager(context);
+                }
+                return log;
             }
         }
     }

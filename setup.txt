@@ -16,4 +16,5 @@ dotnet tool ...
 
 Update db
 Package Manager Console
+cd .\FormManager
 dotnet ef database update --context Database

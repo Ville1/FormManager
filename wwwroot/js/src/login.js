@@ -43,12 +43,18 @@ function Login() {
         return hasStringValue(email) && hasStringValue(password) && !loading;
     }
 
+    var midColumnWidthMobile = 10;
+    var sideColumnWidthMobile = 1;
+    var midColumnWidthDesktop = 6;
+    var sideColumnWidthDesktop = 3;
+
     return (
-        <div className="container">
+        <div className="small main-content container">
+            <h3 className="text-center">{localization.FormManagerTitle}</h3>
             {loginFailed ? <div className="alert alert-warning" role="alert">{localization.InvalidCredentialsMessage}</div> : null}
             <div className="row">
-                <div className="col-1 col-lg-4"></div>
-                <div className="col-10 col-lg-4">
+                <div className={'col-' + sideColumnWidthMobile + ' col-lg-' + sideColumnWidthDesktop}></div>
+                <div className={'col-' + midColumnWidthMobile + ' col-lg-' + midColumnWidthDesktop}>
                     <div className="row mb-1">
                         <label htmlFor="input-email" className="col-sm-2 col-form-label">{localization.Email}</label>
                         <div className="col-sm-10">
@@ -93,7 +99,7 @@ function Login() {
                         </button>
                     </div>
                 </div>
-                <div className="col-1 col-lg-4"></div>
+                <div className={'col-' + sideColumnWidthMobile + ' col-lg-' + sideColumnWidthDesktop}></div>
             </div>
         </div>
     );

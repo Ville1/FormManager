@@ -6,7 +6,8 @@ module.exports = function (_env, argv) {
         context: ROOT,
         entry: {
             login: "./wwwroot/js/src/login.js",
-            frontPage: "./wwwroot/js/src/frontPage.js"
+            frontPage: "./wwwroot/js/src/frontPage.js",
+            navigation: "./wwwroot/js/src/navigation.js"
         },
         output: {
             filename: '[name].js',

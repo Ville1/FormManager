@@ -1,4 +1,5 @@
 ﻿using FormManager.Data.Models;
+using FormManager.Data.Models.Log;
 using FormManager.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -26,6 +27,17 @@ namespace FormManager.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Logout current user
+        /// </summary>
+        /// <returns></returns>
+        [Route("/Logout")]
+        public ActionResult Logout()
+        {
+            HttpContext.SignOutAsync().Wait();
+            return Redirect("/Login");
+        }
+
         [AllowAnonymous]
         [Route("/Login/Authenticate")]
         public ActionResult Login(string email, string password)
@@ -34,11 +46,14 @@ namespace FormManager.Controllers
                 //Invalid credentials
                 return StatusCode(401);
             }
+
             //Log user in
             User user = DB.Users.GetLoginUser(email, password);
             HttpContext.SignInAsync(new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>() {
                 new Claim("UserId", user.Id.ToString())
-            }, "Custom")));
+            }, "Custom"))).Wait();
+            DB.Log.Write(new LoginEvent(user.Id));
+
             return StatusCode(200);
         }
 

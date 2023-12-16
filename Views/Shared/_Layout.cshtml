@@ -19,10 +19,10 @@
         };
         var baseUrl = '@Html.Raw(string.Format("{0}://{1}", Context.Request.Scheme, Context.Request.Host))';
     </script>
-    <div>
-        @RenderBody()
-    </div>
+    <div id="navigation"></div>
+    <script type="module" src="~/js/dist/navigation.js"></script>
+    @RenderBody()
     <script src="~/lib/jquery/dist/jquery.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -19,9 +19,7 @@
         };
         var baseUrl = '@Html.Raw(string.Format("{0}://{1}", Context.Request.Scheme, Context.Request.Host))';
     </script>
-    <div>
-        @RenderBody()
-    </div>
+    @RenderBody()
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
 </body>

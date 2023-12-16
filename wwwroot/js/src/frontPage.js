@@ -7,7 +7,11 @@ class FrontPage extends React.Component {
     }
 
     render() {
-        return <h1>Moro</h1>;
+        return (
+            <div className="small main-content container">
+                <h3 className="text-center">{'Moro'}</h3>
+            </div>
+        );
     }
 }
 

@@ -123,6 +123,12 @@
   <data name="FormManagerTitle" xml:space="preserve">
     <value>Form Manager</value>
   </data>
+  <data name="Forms" xml:space="preserve">
+    <value>Forms</value>
+  </data>
+  <data name="FrontPageTitle" xml:space="preserve">
+    <value>Start</value>
+  </data>
   <data name="InvalidCredentialsMessage" xml:space="preserve">
     <value>Invalid email or password</value>
   </data>
@@ -131,6 +137,9 @@
   </data>
   <data name="Login" xml:space="preserve">
     <value>Login</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Logout</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Password</value>

@@ -79,6 +79,24 @@ namespace FormManager.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Forms.
+        /// </summary>
+        public static string Forms {
+            get {
+                return ResourceManager.GetString("Forms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start.
+        /// </summary>
+        public static string FrontPageTitle {
+            get {
+                return ResourceManager.GetString("FrontPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid email or password.
         /// </summary>
         public static string InvalidCredentialsMessage {
@@ -102,6 +120,15 @@ namespace FormManager.Resources {
         public static string Login {
             get {
                 return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logout.
+        /// </summary>
+        public static string Logout {
+            get {
+                return ResourceManager.GetString("Logout", resourceCulture);
             }
         }
         
