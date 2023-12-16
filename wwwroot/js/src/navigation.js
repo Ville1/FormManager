@@ -8,7 +8,7 @@ class Navigation extends React.Component {
 
     render() {
         return (
-            <nav className="navbar navbar-expand-lg bg-body-tertiary">
+            <nav className="navbar navbar-expand-lg navbar-main">
                 <div className="container-fluid">
                     <button
                         className="navbar-toggler"

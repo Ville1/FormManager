@@ -9,6 +9,17 @@
     max-width: 800px !important;
 }
 
+.navbar-main {
+    background-color: #93F497;
+}
+
+.tool-bar {
+    background-color: #EBEBEB;
+    border-width: 1px 0px 0px 0px;
+    border-style: solid;
+    border-color: #C8C8C8;
+}
+
 body {
     height: 100vh;
     background-color: #F5F5F5;
