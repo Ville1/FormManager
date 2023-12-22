@@ -1,0 +1,7 @@
+## FormManager project -> Open in Terminal ##
+npm run build
+
+## Package Manager Console ##
+cd .\FormManager
+dotnet ef migrations add MIGRATION_NAME_HERE --context Database
+dotnet ef database update --context Database

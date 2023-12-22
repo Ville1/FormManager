@@ -24,7 +24,7 @@ class Navigation extends React.Component {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             <li className="nav-item">
-                                <a className="nav-link active" aria-current="page" href={baseUrl + '/Main'} >{localization.FrontPageTitle}</a>
+                                <a className="nav-link active" aria-current="page" href={baseUrl + '/Main'}>{localization.FrontPageTitle}</a>
                             </li>
                             <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -32,10 +32,13 @@ class Navigation extends React.Component {
                                 </a>
                                 <ul className="dropdown-menu">
                                     <li>
-                                        <a className="dropdown-item" href="#">test</a>
+                                        <h6 class="dropdown-header">{localization.VideoGames}</h6>
                                     </li>
                                     <li>
-                                        <a className="dropdown-item" href="#">test2</a>
+                                        <a className="dropdown-item" href="#">{localization.New}</a>
+                                    </li>
+                                    <li>
+                                        <a className="dropdown-item" href={baseUrl + '/VideoGame/Index'}>{localization.Browse}</a>
                                     </li>
                                 </ul>
                             </li>
