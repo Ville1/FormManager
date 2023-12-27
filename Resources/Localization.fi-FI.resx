@@ -132,6 +132,9 @@
   <data name="FrontPageTitle" xml:space="preserve">
     <value>Etusivu</value>
   </data>
+  <data name="GenericErrorMessage" xml:space="preserve">
+    <value>Jokin meni pieleen, yritä uudelleen tai ota yhteyttä ylläpitoon</value>
+  </data>
   <data name="InvalidCredentialsMessage" xml:space="preserve">
     <value>Virheellinen sähköposti tai salasana</value>
   </data>
@@ -149,6 +152,9 @@
   </data>
   <data name="Password" xml:space="preserve">
     <value>Salasana</value>
+  </data>
+  <data name="RowsPerPage" xml:space="preserve">
+    <value>Rivejä per sivu:</value>
   </data>
   <data name="VideoGames" xml:space="preserve">
     <value>Videopelit</value>

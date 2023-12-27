@@ -1,4 +1,5 @@
-﻿using FormManager.Data.HttpData.Request;
+﻿using FormManager.Data;
+using FormManager.Data.HttpData.Request;
 using FormManager.Data.HttpData.Response;
 using FormManager.Data.Models.Forms;
 using FormManager.Services;
@@ -25,11 +26,21 @@ namespace FormManager.Controllers
         [HttpPost]
         [Route("/VideoGame/Search")]
         [Authorize(AuthPolicy.Basic)]
-        public ActionResult Search(SearchRequest search)
+        public ActionResult Search([FromBody]SearchRequest search)
         {
-            ListResponse<VideoGame> games = new ListResponse<VideoGame>();
+            //Validate parameters
+            search ??= new SearchRequest();
+            search.Validate();
 
-            return Json(games);
+            FilterContainer filters = search.ParseFilters(new List<Filter>() {
+                new Filter(FilterType.Text, "name")
+            });
+
+            //Get results
+            IEnumerable<VideoGame> games = DB.VideoGames.Search(filters.IsMatch);
+            IEnumerable<VideoGame> paginatedResults = search.Paginate(games);
+
+            return Json(new ListResponse<VideoGame>(paginatedResults, games.Count(), search.PageSize));
         }
     }
 }

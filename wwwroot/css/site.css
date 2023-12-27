@@ -20,6 +20,40 @@
     border-color: #C8C8C8;
 }
 
+.pagination-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.pagination {
+    width: 300px;
+}
+
+.pagination > .btn {
+    margin-left: 1px;
+    margin-right: 1px;
+}
+
+.pagination > input {
+    width: 75px;
+}
+
+.pagination > div {
+    display: flex;
+    align-items: center;
+    padding-left: 2px;
+    padding-right: 2px;
+    font-size: 16px;
+}
+
+.pagination-container > .dropdown {
+    display: inline;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+}
+
 body {
     height: 100vh;
     background-color: #F5F5F5;

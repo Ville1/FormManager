@@ -1,7 +1,7 @@
 ﻿import { createRoot } from 'react-dom/client';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useState } from 'react';
-import hasStringValue from '../components/utils.js';
+import { hasStringValue } from '../components/utils.js';
 
 function Login() {
     //State

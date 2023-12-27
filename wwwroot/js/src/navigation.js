@@ -32,7 +32,7 @@ class Navigation extends React.Component {
                                 </a>
                                 <ul className="dropdown-menu">
                                     <li>
-                                        <h6 class="dropdown-header">{localization.VideoGames}</h6>
+                                        <h6 className="dropdown-header">{localization.VideoGames}</h6>
                                     </li>
                                     <li>
                                         <a className="dropdown-item" href="#">{localization.New}</a>

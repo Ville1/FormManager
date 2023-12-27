@@ -106,6 +106,15 @@ namespace FormManager.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Something went wrong, try again or contact support.
+        /// </summary>
+        public static string GenericErrorMessage {
+            get {
+                return ResourceManager.GetString("GenericErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid email or password.
         /// </summary>
         public static string InvalidCredentialsMessage {
@@ -156,6 +165,15 @@ namespace FormManager.Resources {
         public static string Password {
             get {
                 return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rows per page:.
+        /// </summary>
+        public static string RowsPerPage {
+            get {
+                return ResourceManager.GetString("RowsPerPage", resourceCulture);
             }
         }
         

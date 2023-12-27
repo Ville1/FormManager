@@ -132,6 +132,9 @@
   <data name="FrontPageTitle" xml:space="preserve">
     <value>Start</value>
   </data>
+  <data name="GenericErrorMessage" xml:space="preserve">
+    <value>Something went wrong, try again or contact support</value>
+  </data>
   <data name="InvalidCredentialsMessage" xml:space="preserve">
     <value>Invalid email or password</value>
   </data>
@@ -149,6 +152,9 @@
   </data>
   <data name="Password" xml:space="preserve">
     <value>Password</value>
+  </data>
+  <data name="RowsPerPage" xml:space="preserve">
+    <value>Rows per page:</value>
   </data>
   <data name="VideoGames" xml:space="preserve">
     <value>Video games</value>

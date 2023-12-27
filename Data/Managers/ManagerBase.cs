@@ -41,5 +41,15 @@ namespace FormManager.Data.Managers
             dbSet.Add(newItem);
             database.SaveChanges();
         }
+
+        public IEnumerable<TModel> GetAll()
+        {
+            return dbSet.AsEnumerable();
+        }
+
+        public IEnumerable<TModel> Search(Func<TModel, bool> searchFunc)
+        {
+            return dbSet.Where(searchFunc).AsEnumerable();
+        }
     }
 }

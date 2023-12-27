@@ -33,5 +33,16 @@ namespace FormManager.Services
                 return log;
             }
         }
+
+        private VideoGameManager? videoGames;
+        public VideoGameManager VideoGames
+        {
+            get {
+                if (videoGames == null) {
+                    videoGames = new VideoGameManager(context);
+                }
+                return videoGames;
+            }
+        }
     }
 }
