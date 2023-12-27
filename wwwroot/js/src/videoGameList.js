@@ -57,6 +57,12 @@ class VideoGameList extends React.Component {
                             onClick: (videoGame) => { console.log(videoGame); }
                         }
                     ]}
+                    buttons={[
+                        {
+                            text: localization.New,
+                            onClick: () => {  }
+                        }
+                    ]}
                 />
             </div>
         );

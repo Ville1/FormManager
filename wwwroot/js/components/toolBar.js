@@ -1,5 +1,5 @@
 ﻿import React from 'react';
-import hasStringValue from './utils.js';
+import { hasStringValue } from './utils.js';
 
 class ToolBar extends React.Component {
     /**

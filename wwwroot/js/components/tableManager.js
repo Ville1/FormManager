@@ -1,5 +1,6 @@
 ﻿import React from 'react';
 import { hasStringValue, stateFetch } from './utils.js';
+import ToolBar from './toolBar.js';
 
 var filterType = {
     text: 'text'
@@ -17,6 +18,8 @@ var filterType = {
  *   array<Filter>, optional
  * rowButtons
  *   array<RowButton>, optional
+ * buttons
+ *   array<Button>, optional
  */
 class TableManager extends React.Component {
     /**
@@ -37,6 +40,12 @@ class TableManager extends React.Component {
      * @property {string} tooltip
      * @property {Function} onClick
      * @property {string} buttonClass Default = 'btn-light'
+     * 
+     * @typedef {Object} Button Same as ToolBar Button
+     * @property {string} text
+     * @property {Object} onClick
+     * @property {string} href
+     * @property {string} className
      */
 
     constructor(props) {
@@ -127,6 +136,19 @@ class TableManager extends React.Component {
                     button.icon = 'fa-solid fa-question';
                 }
                 buttons.push(button);
+            }
+        }
+        return buttons;
+    }
+
+    /**
+     * @returns {Array<Button>}
+     */
+    getButtons() {
+        var buttons = [];
+        if (Array.isArray(this.props.buttons)) {
+            for (var i = 0; i < this.props.buttons.length; i++) {
+                buttons.push(this.props.buttons[i]);
             }
         }
         return buttons;
@@ -251,6 +273,7 @@ class TableManager extends React.Component {
         var columns = this.getColumns();
         var filters = this.getFilters();
         var rowButtons = this.getRowButtons();
+        var toolbarButtons = this.getButtons();
 
         //Render filters
         var filterRow = null;
@@ -328,7 +351,7 @@ class TableManager extends React.Component {
                                 title={hasStringValue(button.tooltip) ? button.tooltip : undefined}
                                 onClick={() => { button.onClick(row); }}
                             >
-                                <i class={button.icon}></i>
+                                <i className={button.icon}></i>
                             </button>
                         );
                     }
@@ -344,6 +367,14 @@ class TableManager extends React.Component {
                     </tr>
                 );
             });
+        }
+
+        //Toolbar
+        var toolbar = null;
+        if (toolbarButtons.length !== 0) {
+            toolbar = (
+                <ToolBar buttons={toolbarButtons} />
+            );
         }
 
         return (
@@ -371,10 +402,10 @@ class TableManager extends React.Component {
                                 <div className="pagination-container">
                                     <div className="pagination">
                                         <button type="button" className="icon-button btn btn-primary" onClick={() => { this.handleFirstPageClick(); }}>
-                                            <i class="fa-solid fa-angles-left"></i>
+                                            <i className="fa-solid fa-angles-left"></i>
                                         </button>
                                         <button type="button" className="icon-button btn btn-primary" onClick={() => { this.handlePreviousPageClick(); }}>
-                                            <i class="fa-solid fa-angle-left"></i>
+                                            <i className="fa-solid fa-angle-left"></i>
                                         </button>
                                         <input
                                             type="text"
@@ -385,10 +416,10 @@ class TableManager extends React.Component {
                                         <div className="pagination-divider"><span>/</span></div>
                                         <div className="pagination-total-pages"><span>{this.state.results.totalPages}</span></div>
                                         <button type="button" className="icon-button btn btn-primary" onClick={() => { this.handleNextPageClick(); }}>
-                                            <i class="fa-solid fa-angle-right"></i>
+                                            <i className="fa-solid fa-angle-right"></i>
                                         </button>
                                         <button type="button" className="icon-button btn btn-primary" onClick={() => { this.handleLastPageClick(); }}>
-                                            <i class="fa-solid fa-angles-right"></i>
+                                            <i className="fa-solid fa-angles-right"></i>
                                         </button>
                                     </div>
                                     <div className="dropdown">
@@ -410,6 +441,7 @@ class TableManager extends React.Component {
                         </tr>
                     </tfoot>
                 </table>
+                {toolbar}
             </div>
         );
     }
