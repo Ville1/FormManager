@@ -120,6 +120,12 @@
   <data name="Browse" xml:space="preserve">
     <value>Selaa</value>
   </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Poista</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Muokkaa</value>
+  </data>
   <data name="Email" xml:space="preserve">
     <value>Sähköposti</value>
   </data>
@@ -149,6 +155,9 @@
   </data>
   <data name="New" xml:space="preserve">
     <value>Uusi</value>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>Avaa</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Salasana</value>

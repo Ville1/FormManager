@@ -15,6 +15,8 @@ var filterType = {
  *   array<Column>, required
  * filters
  *   array<Filter>, optional
+ * rowButtons
+ *   array<RowButton>, optional
  */
 class TableManager extends React.Component {
     /**
@@ -23,11 +25,18 @@ class TableManager extends React.Component {
      * @property {string} propertyName
      * @property {boolean} sortable Default = true
      * @property {Function} onCellRender (rowData) => cellJsx
+     * @property {number} buttonColumnIndex
      *
      * @typedef {Object} Filter
      * @property {string} label
      * @property {string} propertyName
      * @property {string} type Default = 'text'
+     * 
+     * @typedef {Object} RowButton
+     * @property {string} icon
+     * @property {string} tooltip
+     * @property {Function} onClick
+     * @property {string} buttonClass Default = 'btn-light'
      */
 
     constructor(props) {
@@ -43,10 +52,10 @@ class TableManager extends React.Component {
             },
             filters: {},
             currentPage: 0,
-            pageSize: 100
+            pageSize: 10
         };
 
-        this.pageSizeOptions = [10, 20, 100, 500];
+        this.pageSizeOptions = [5, 10, 20, 100, 500];
         this.fetchRowsDelay = 500;//ms
         this.fetchTimeOutId = null;
     }
@@ -69,8 +78,18 @@ class TableManager extends React.Component {
                 }
                 column.title = hasStringValue(column.title) ? column.title : column.propertyName;
                 column.sortable = column.sortable !== false;
+                column.buttonColumnIndex = -1;
                 columns.push(column);
             }
+        }
+        for (var i = 0; i < this.getRowButtons().length; i++) {
+            columns.push({
+                title: '',
+                propertyName: '',
+                sortable: false,
+                onCellRender: null,
+                buttonColumnIndex: i
+            });
         }
         return columns;
     }
@@ -93,6 +112,24 @@ class TableManager extends React.Component {
             }
         }
         return filters;
+    }
+
+    /**
+     * @returns {Array<RowButton>}
+     */
+    getRowButtons() {
+        var buttons = [];
+        if (Array.isArray(this.props.rowButtons)) {
+            for (var i = 0; i < this.props.rowButtons.length; i++) {
+                var button = this.props.rowButtons[i];
+                if (!hasStringValue(button.icon)) {
+                    this.logError('Row button ' + i + ' is missing icon name');
+                    button.icon = 'fa-solid fa-question';
+                }
+                buttons.push(button);
+            }
+        }
+        return buttons;
     }
 
     fetchRows() {
@@ -213,6 +250,7 @@ class TableManager extends React.Component {
     render() {
         var columns = this.getColumns();
         var filters = this.getFilters();
+        var rowButtons = this.getRowButtons();
 
         //Render filters
         var filterRow = null;
@@ -270,9 +308,33 @@ class TableManager extends React.Component {
                 var cells = [];
                 for (var i = 0; i < columns.length; i++) {
                     var column = columns[i];
+                    var cellContent;
+                    if (column.buttonColumnIndex === -1) {
+                        //Normal cell
+                        if (typeof column.onCellRender === 'function') {
+                            //Custom render function was provided in props
+                            cellContent = column.onCellRender(row);
+                        } else {
+                            //Display row data
+                            cellContent = row[column.propertyName];
+                        }
+                    } else {
+                        //Button column
+                        var button = rowButtons[column.buttonColumnIndex];
+                        cellContent = (
+                            <button
+                                type="button"
+                                className={'icon-button btn ' + (hasStringValue(button.buttonClass) ? button.buttonClass : 'btn-light')}
+                                title={hasStringValue(button.tooltip) ? button.tooltip : undefined}
+                                onClick={() => { button.onClick(row); }}
+                            >
+                                <i class={button.icon}></i>
+                            </button>
+                        );
+                    }
                     cells.push(
-                        <td key={'row-' + index + '-cell-' + i}>
-                            {typeof column.onCellRender === 'function' ? column.onCellRender(row) : row[column.propertyName]}
+                        <td key={'row-' + index + '-cell-' + i} className={column.buttonColumnIndex === -1 ? '' : 'button-column-cell'}>
+                            {cellContent}
                         </td>
                     );
                 }
@@ -293,7 +355,7 @@ class TableManager extends React.Component {
                         <tr>
                             {columns.map((column, index) => {
                                 return (
-                                    <th scope="col" key={'column-header-' + index}>
+                                    <th scope="col" key={'column-header-' + index} className={column.buttonColumnIndex === -1 ? '' : 'button-column-header'}>
                                         {column.title}
                                     </th>
                                 );
@@ -308,18 +370,26 @@ class TableManager extends React.Component {
                             <td colSpan={columns.length}>
                                 <div className="pagination-container">
                                     <div className="pagination">
-                                        <input className="btn btn-primary" type="button" onClick={() => { this.handleFirstPageClick(); }} value={'<<'} />
-                                        <input className="btn btn-primary" type="button" onClick={() => { this.handlePreviousPageClick(); }} value={'<'} />
+                                        <button type="button" className="icon-button btn btn-primary" onClick={() => { this.handleFirstPageClick(); }}>
+                                            <i class="fa-solid fa-angles-left"></i>
+                                        </button>
+                                        <button type="button" className="icon-button btn btn-primary" onClick={() => { this.handlePreviousPageClick(); }}>
+                                            <i class="fa-solid fa-angle-left"></i>
+                                        </button>
                                         <input
                                             type="text"
                                             className="form-control"
                                             value={this.state.currentPage + 1}
                                             onChange={(event) => { this.handlePageChange(event.target.value); }}
                                         />
-                                        <div><span>/</span></div>
-                                        <div><span>{this.state.results.totalPages}</span></div>
-                                        <input className="btn btn-primary" type="button" onClick={() => {this.handleNextPageClick(); }} value={'>'} />
-                                        <input className="btn btn-primary" type="button" onClick={() => { this.handleLastPageClick(); }} value={'>>'} />
+                                        <div className="pagination-divider"><span>/</span></div>
+                                        <div className="pagination-total-pages"><span>{this.state.results.totalPages}</span></div>
+                                        <button type="button" className="icon-button btn btn-primary" onClick={() => { this.handleNextPageClick(); }}>
+                                            <i class="fa-solid fa-angle-right"></i>
+                                        </button>
+                                        <button type="button" className="icon-button btn btn-primary" onClick={() => { this.handleLastPageClick(); }}>
+                                            <i class="fa-solid fa-angles-right"></i>
+                                        </button>
                                     </div>
                                     <div className="dropdown">
                                         <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">{localization.RowsPerPage + ' ' + this.state.pageSize}</button>

@@ -40,6 +40,23 @@ class VideoGameList extends React.Component {
                             propertyName: 'name'
                         }
                     ]}
+                    rowButtons={[
+                        /*{TODO: Show this then readonly
+                            icon: 'fa-solid fa-arrow-up-right-from-square',
+                            tooltip: localization.Open,
+                            onClick: (videoGame) => { console.log(videoGame); }
+                        }*/
+                        {
+                            icon: 'fa-solid fa-pen',
+                            tooltip: localization.Edit,
+                            onClick: (videoGame) => { console.log(videoGame); }
+                        },
+                        {
+                            icon: 'fa-solid fa-x',
+                            tooltip: localization.Delete,
+                            onClick: (videoGame) => { console.log(videoGame); }
+                        }
+                    ]}
                 />
             </div>
         );

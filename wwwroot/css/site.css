@@ -37,14 +37,24 @@
 
 .pagination > input {
     width: 75px;
+    height: 35px;
+    margin-left: 5px;
 }
 
 .pagination > div {
     display: flex;
     align-items: center;
-    padding-left: 2px;
-    padding-right: 2px;
     font-size: 16px;
+}
+
+.pagination-divider {
+    padding-left: 5px;
+    padding-right: 1px;
+}
+
+.pagination-total-pages {
+    padding-left: 1px;
+    padding-right: 5px;
 }
 
 .pagination-container > .dropdown {
@@ -52,6 +62,24 @@
     position: absolute;
     right: 0px;
     top: 0px;
+}
+
+.icon-button {
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    width: 35px;
+    height: 35px;
+}
+
+.button-column-header {
+    padding: 0px !important;
+}
+
+.button-column-cell {
+    padding-left: 2px !important;
+    padding-right: 2px !important;
 }
 
 body {
