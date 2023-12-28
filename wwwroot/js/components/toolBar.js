@@ -8,6 +8,7 @@ class ToolBar extends React.Component {
      * @property {Object} onClick
      * @property {string} href
      * @property {string} className
+     * @property {boolean} disabled Default = false
      */
 
     constructor(props) {
@@ -25,24 +26,31 @@ class ToolBar extends React.Component {
         return (
             <nav className="navbar fixed-bottom tool-bar">
                 <div className="container-fluid justify-content-start">
-                    {this.getButtons().map((button, index) => {
-                        return (
-                            hasStringValue(button.href) ?
-                                <ul className="navbar-nav" key={index}>
-                                    <li className={'nav-item' + (hasStringValue(button.className) ? button.className + ' ' : '')}>
-                                        <a className="nav-link active" aria-current="page" href={button.href}>
-                                            {button.text}
-                                        </a>
-                                    </li>
-                                </ul> :
-                                <form className="d-flex" key={index}>
-                                    <button className={'btn ' + (hasStringValue(button.className) ? button.className : 'btn-primary')} onClick={button.onClick}>
+                    <form className="d-flex">
+                        {this.getButtons().map((button, index) => {
+                            return (
+                                hasStringValue(button.href) ?
+                                    <a
+                                        key={index}
+                                        className={'btn ' + (hasStringValue(button.className) ? button.className : 'btn-primary')}
+                                        href={button.href}
+                                        role="button"
+                                        disabled={button.disabled === true}
+                                    >
+                                        {button.text}
+                                    </a> :
+                                    <button
+                                        key={index}
+                                        className={'btn ' + (hasStringValue(button.className) ? button.className : 'btn-primary')}
+                                        onClick={() => { if (typeof button.onClick === 'function' && button.disabled !== true) { button.onClick(); }; }}
+                                        disabled={button.disabled === true}
+                                    >
                                         {button.text}
                                     </button>
-                                </form>
 
-                        );
-                    })}
+                            );
+                        })}
+                    </form>
                 </div>
             </nav>
         );

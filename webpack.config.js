@@ -8,7 +8,8 @@ module.exports = function (_env, argv) {
             login: "./wwwroot/js/src/login.js",
             frontPage: "./wwwroot/js/src/frontPage.js",
             navigation: "./wwwroot/js/src/navigation.js",
-            videoGameList: "./wwwroot/js/src/videoGameList.js"
+            videoGameList: "./wwwroot/js/src/videoGameList.js",
+            videoGameForm: "./wwwroot/js/src/videoGameForm.js"
         },
         output: {
             filename: '[name].js',

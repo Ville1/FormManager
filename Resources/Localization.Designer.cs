@@ -169,6 +169,24 @@ namespace FormManager.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Missing required data.
+        /// </summary>
+        public static string MissingRequiredData {
+            get {
+                return ResourceManager.GetString("MissingRequiredData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New.
         /// </summary>
         public static string New {
@@ -201,6 +219,24 @@ namespace FormManager.Resources {
         public static string RowsPerPage {
             get {
                 return ResourceManager.GetString("RowsPerPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Video game.
+        /// </summary>
+        public static string VideoGame {
+            get {
+                return ResourceManager.GetString("VideoGame", resourceCulture);
             }
         }
         

@@ -35,7 +35,7 @@ class Navigation extends React.Component {
                                         <h6 className="dropdown-header">{localization.VideoGames}</h6>
                                     </li>
                                     <li>
-                                        <a className="dropdown-item" href="#">{localization.New}</a>
+                                        <a className="dropdown-item" href={baseUrl + '/VideoGame/Form'}>{localization.New}</a>
                                     </li>
                                     <li>
                                         <a className="dropdown-item" href={baseUrl + '/VideoGame/Index'}>{localization.Browse}</a>

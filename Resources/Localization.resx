@@ -153,6 +153,12 @@
   <data name="Logout" xml:space="preserve">
     <value>Logout</value>
   </data>
+  <data name="MissingRequiredData" xml:space="preserve">
+    <value>Missing required data</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
   <data name="New" xml:space="preserve">
     <value>New</value>
   </data>
@@ -164,6 +170,12 @@
   </data>
   <data name="RowsPerPage" xml:space="preserve">
     <value>Rows per page:</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="VideoGame" xml:space="preserve">
+    <value>Video game</value>
   </data>
   <data name="VideoGames" xml:space="preserve">
     <value>Video games</value>

@@ -3,6 +3,42 @@
 }
 
 /**
+ * @param {any} param
+ * @param {number} defaultValue
+ * @returns
+ */
+export function toInt(param, defaultValue) {
+    defaultValue = defaultValue ?? 0;
+
+    if (typeof param === 'number') {
+        //Already number, round to make sure it's int
+        return Math.round(param);
+    }
+
+    if (typeof param !== 'string') {
+        //Convert to string
+        param = param + '';
+    }
+
+    //Parse int, and return defaultValue if NaN
+    param = parseInt(param);
+    return Number.isNaN(param) ? defaultValue : param;
+}
+
+/**
+ * @param {number} length
+ * @returns {string}
+ */
+export function randomString(length) {
+    var chars = '0123456789abcdefghijklmnopqrstuvwzxyABCDEFGHIJKLMNOPQRSTUVWZXY';
+    var string = '';
+    for (var i = 0; i < length; i++) {
+        string += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return string;
+}
+
+/**
  * Makes a http request using fetch-function, and updates React component's state accordingly
  * @param {Object} component React component
  * @param {string} url Appended after baseUrl

@@ -60,7 +60,7 @@ class VideoGameList extends React.Component {
                     buttons={[
                         {
                             text: localization.New,
-                            onClick: () => {  }
+                            href: baseUrl + '/VideoGame/Form'
                         }
                     ]}
                 />

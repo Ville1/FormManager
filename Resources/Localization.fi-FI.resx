@@ -153,6 +153,12 @@
   <data name="Logout" xml:space="preserve">
     <value>Kirjaudu ulos</value>
   </data>
+  <data name="MissingRequiredData" xml:space="preserve">
+    <value>Pakollisia tietoja puuttuu</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Nimi</value>
+  </data>
   <data name="New" xml:space="preserve">
     <value>Uusi</value>
   </data>
@@ -164,6 +170,12 @@
   </data>
   <data name="RowsPerPage" xml:space="preserve">
     <value>Rivejä per sivu:</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Tallenna</value>
+  </data>
+  <data name="VideoGame" xml:space="preserve">
+    <value>Videopeli</value>
   </data>
   <data name="VideoGames" xml:space="preserve">
     <value>Videopelit</value>

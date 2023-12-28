@@ -23,6 +23,17 @@ namespace FormManager.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Form page
+        /// </summary>
+        /// <returns></returns>
+        [Route("/VideoGame/Form")]
+        [Authorize(AuthPolicy.Basic)]
+        public ActionResult Form()
+        {
+            return View();
+        }
+
         [HttpPost]
         [Route("/VideoGame/Search")]
         [Authorize(AuthPolicy.Basic)]
