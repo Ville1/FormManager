@@ -36,10 +36,11 @@ namespace FormManager.Data.Managers
             return dbSet.First(searchFunction);
         }
 
-        public void Add(TModel newItem)
+        public Guid Add(TModel newItem)
         {
             dbSet.Add(newItem);
             database.SaveChanges();
+            return newItem.Id;
         }
 
         public IEnumerable<TModel> GetAll()

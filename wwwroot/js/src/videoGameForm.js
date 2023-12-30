@@ -11,11 +11,12 @@ class VideoGameForm extends React.Component {
         return (
             <div className="small main-content container">
                 <FormManager
+                    url="/VideoGame"
                     title={localization.VideoGame}
                     rows={[
                         {
                             label: localization.Name,
-                            property: 'Name',
+                            property: 'name',
                             required: true
                         }
                     ]}

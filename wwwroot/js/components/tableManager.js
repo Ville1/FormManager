@@ -343,7 +343,7 @@ class TableManager extends React.Component {
                         }
                     } else {
                         //Button column
-                        var button = rowButtons[column.buttonColumnIndex];
+                        let button = rowButtons[column.buttonColumnIndex];
                         cellContent = (
                             <button
                                 type="button"

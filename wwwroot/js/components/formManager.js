@@ -1,12 +1,12 @@
 ﻿import React from 'react';
-import { hasStringValue, toInt, stateFetch } from './utils.js';
+import { hasStringValue, toInt, stateFetch, emptyGuid } from './utils.js';
 import ToolBar from './toolBar.js';
 import TextInput from './textInput.js';
 
 var formState = {
     new: 'new',
     edit: 'edit',
-    readonly: 'readonly'
+    readOnly: 'readOnly'
 };
 
 var inputType = {
@@ -34,6 +34,13 @@ class FormManager extends React.Component {
      * @typedef {Object} FormRow
      * @property {string} title
      * @property {Array<Input>} inputs
+     * 
+     * @typedef {Object} DataContainer
+     * @property {string} property
+     * @property {any} value
+     * @property {any} oldValue
+     * @property {Array<string>} errors
+     * @property {boolean} errorGrace True = hide error messages
      */
 
     constructor(props) {
@@ -42,41 +49,109 @@ class FormManager extends React.Component {
         this.state = {
             error: false,
             currentState: formState.new,
-            data: {}
+            loading: false,
+            saving: false,
+            id: emptyGuid,
+            /** @type {Array<DataContainer>} */
+            data: [],
+            responseData: {}
         };
 
+        //Initialize form data
         this.initializeData();
     }
 
     componentDidMount() {
+        //Determine initial form state
+        var searchParams = (new URL(document.location)).searchParams;
+        if (searchParams.has('id')) {
+            //Load a pre-existing form
+            this.loadForm(searchParams.get('id'));
+        }
     }
 
     initializeData() {
         var rows = this.getRows();
-        var data = {};
+        var data = [];
         for (var i = 0; i < rows.length; i++) {
             var row = rows[i];
             for (var j = 0; j < row.inputs.length; j++) {
                 var input = row.inputs[j];
+                var dataContainer = {
+                    property: input.property,
+                    value: null,
+                    oldValue: null,
+                    errors: [],
+                    errorGrace: false
+                };
+
                 switch (input.type) {
                     case inputType.text:
-                        data[input.property] = {
-                            value: '',
-                            errors: []
-                        };
+                        dataContainer.value = '';
+                        dataContainer.oldValue = '';
                         break;
                     default:
                         this.logInputTypeNotImplementedError(input.type);
                         break;
                 }
+
+                data.push(dataContainer);
             }
         }
 
         this.state.data = data;
-        this.validate(null, false);
+        this.validate(null, true);
+    }
+
+    loadForm(id) {
+        stateFetch(this, this.props.url + '?id=' + id, {
+            loadingProperty: 'loading',
+            errorProperty: 'error',
+            resultsProperty: 'responseData',
+            callback: (success) => {
+                if (success) {
+                    //Form loaded to responseData
+                    var data = this.copyData();
+                    var inputs = this.getInputs();
+
+                    //Loop inputs
+                    for (var i = 0; i < inputs.length; i++) {
+                        var input = inputs[i];
+                        var responseData = this.state.responseData[input.property];
+                        var formData = this.getData(input.property, data);
+                        formData.errorGrace = false;
+
+                        //Set input value
+                        switch (input.type) {
+                            case inputType.text:
+                                formData.value = responseData;
+                                formData.oldValue = responseData;
+                                break;
+                            default:
+                                this.logInputTypeNotImplementedError(input.type);
+                                break;
+                        }
+                    }
+
+                    this.setState({
+                        currentState: formState.edit,
+                        data: data,
+                        id: id
+                    }, () => {
+                        this.validate();
+                    });
+                } else {
+                    //Failed to load form
+                    this.setState({
+                        currentState: formState.readOnly
+                    });
+                }
+            }
+        });
     }
 
     /**
+     * Get all rows in the form
      * @returns {Array<FormRow>}
      */
     getRows() {
@@ -112,6 +187,41 @@ class FormManager extends React.Component {
         }
 
         return rows;
+    }
+
+    /**
+     * Get all inputs in the form
+     * @returns {Array<Input>}
+     */
+    getInputs() {
+        var rows = this.getRows();
+        var inputs = [];
+        for (var i = 0; i < rows.length; i++) {
+            var row = rows[i];
+            for (var j = 0; j < row.inputs.length; j++) {
+                inputs.push(row.inputs[j]);
+            }
+        }
+        return inputs;
+    }
+
+    /**
+     * @param {string} property
+     * @param {Array<DataContainer>} data
+     * @returns {DataContainer}
+     */
+    getData(property, data) {
+        return (data ?? this.state.data).find(x => x.property === property);
+    }
+
+    /**
+     * Get a clone of current this.state.data - array
+     * @returns {Array<DataContainer>}
+     */
+    copyData() {
+        return this.state.data.map(x => {
+            return { ...x };
+        });
     }
 
     /**
@@ -158,16 +268,31 @@ class FormManager extends React.Component {
      * @returns {JSX.Element}
      */
     renderInput(input, rowIndex, elementIndex) {
+        var formData = this.getData(input.property);
+        var errorMessage = null;
+        var showError = formData.errors.length !== 0 && !formData.errorGrace;
+        if (showError) {
+            errorMessage = [];
+            for (var i = 0; i < formData.errors.length; i++) {
+                errorMessage.push(formData.errors[i]);
+                if (i !== formData.errors.length - 1) {
+                    errorMessage.push(<br />);
+                }
+            }
+        }
+
         switch (input.type) {
             case inputType.text:
                 return (
                     <TextInput
                         key={'input-' + rowIndex + '-' + elementIndex}
                         label={input.label}
-                        value={this.state.data[input.property].value}
+                        value={formData.value}
                         required={input.required}
                         maxLength={input.maxLength}
                         onChange={(value) => { this.handleChange(input, value); }}
+                        error={showError}
+                        errorMessage={errorMessage}
                     />
                 );
             default:
@@ -181,11 +306,11 @@ class FormManager extends React.Component {
      * @param {Object} value
      */
     handleChange(input, value) {
-        var data = { ...this.state.data };
+        var data = this.copyData();
 
         switch (input.type) {
             case inputType.text:
-                data[input.property].value = value;
+                this.getData(input.property, data).value = value;
                 break;
             default:
                 console.log(this.logInputTypeNotImplementedError(input.type));
@@ -199,28 +324,75 @@ class FormManager extends React.Component {
         });
     }
 
+    handleSave() {
+        //Parse request body
+        var body = {
+            id: this.state.id
+        };
+        for (var i = 0; i < this.state.data.length; i++) {
+            var formData = this.state.data[i];
+            body[formData.property] = formData.value;
+        }
+
+        //Save
+        stateFetch(this, this.props.url, {
+            method: 'POST',
+            loadingProperty: 'saving',
+            errorProperty: 'error',
+            resultsProperty: 'responseData',
+            body: body,
+            callback: (success) => {
+                if (success) {
+                    //TODO: Show saved-message
+
+                    this.setState({
+                        id: this.state.responseData,
+                        currentState: formState.edit
+                    });
+                }
+            }
+        });
+    }
+
     /**
      * @param {string} property Property name. If not provided, validate all inputs
-     * @param {boolean} useSetState If true uses setState-function, otherwise this.state.data = {}
+     * @param {boolean} initialization If true uses uses '=' - operation and sets errorGrace to true, otherwise uses setState-function
      */
-    validate(property, useSetState) {
-        var data = { ...this.state.data };
+    validate(property, initialization) {
+        var data = this.copyData();
         var rows = this.getRows();
         var propertyValidated = false;
 
+        //Loop form rows
         for (var i = 0; i < rows.length && !propertyValidated; i++) {
             var row = rows[i];
+
+            //Loop inputs in the row
             for (var j = 0; j < row.inputs.length && !propertyValidated; j++) {
                 var input = row.inputs[j];
+
                 if (hasStringValue(property) && input.property !== property) {
+                    //property - parameter was used, and this is not the selected input
                     continue;
+                }
+
+                //Get form data associated with current input
+                var formData = this.getData(input.property, data);
+
+                //Clear errors
+                formData.errors = [];
+
+                if (initialization) {
+                    formData.errorGrace = true;
+                } else {
+                    formData.errorGrace = false;
                 }
 
                 switch (input.type) {
                     case inputType.text:
-                        data[input.property].errors = [];
-                        if (!hasStringValue(data[input.property].value)) {
-                            data[input.property].errors.push(localization.MissingRequiredData);
+                        if (input.required && !hasStringValue(formData.value)) {
+                            //Text input is missing data
+                            formData.errors.push(localization.MissingRequiredData);
                         }
                         break;
                     default:
@@ -229,23 +401,31 @@ class FormManager extends React.Component {
                 }
 
                 if (hasStringValue(property) && input.property === property) {
+                    //property - parameter was used, and it has now been validated
                     propertyValidated = true;
                 }
             }
         }
 
-        if (useSetState !== false) {
+        if (initialization === true) {
+            this.state.data = data;
+        } else {
             this.setState({
                 data: data
             });
-        } else {
-            this.state.data = data;
         }
     }
 
+    isReadOnly() {
+        return this.state.currentState === formState.readOnly || this.state.loading || this.state.saving;
+    }
+
     canSave() {
-        for (const property in this.state.data) {
-            if (this.state.data[property].errors.length !== 0) {
+        if (this.isReadOnly()) {
+            return false;
+        }
+        for (var i = 0; i < this.state.data.length; i++) {
+            if (this.state.data[i].errors.length !== 0) {
                 return false;
             }
         }
@@ -272,7 +452,7 @@ class FormManager extends React.Component {
                 <ToolBar buttons={[
                     {
                         text: localization.Save,
-                        onClick: () => { console.log('save'); },
+                        onClick: () => { this.handleSave(); },
                         disabled: !this.canSave()
                     }
                 ]}/>

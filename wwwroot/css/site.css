@@ -1,4 +1,5 @@
-﻿.main-content {
+﻿/***** Main content & body *****/
+.main-content {
     height: 100vh;
     background-color: #ffffff;
     padding-top: 50px;
@@ -9,10 +10,17 @@
     max-width: 800px !important;
 }
 
+body {
+    height: 100vh;
+    background-color: #F5F5F5;
+}
+
+/***** Navigation *****/
 .navbar-main {
     background-color: #93F497;
 }
 
+/***** Tool bar *****/
 .tool-bar {
     background-color: #EBEBEB;
     border-width: 1px 0px 0px 0px;
@@ -20,6 +28,17 @@
     border-color: #C8C8C8;
 }
 
+/***** Tables *****/
+.button-column-header {
+    padding: 0px !important;
+}
+
+.button-column-cell {
+    padding-left: 2px !important;
+    padding-right: 2px !important;
+}
+
+/***** Pagination *****/
 .pagination-container {
     position: relative;
     display: flex;
@@ -64,6 +83,7 @@
     top: 0px;
 }
 
+/***** Icon button *****/
 .icon-button {
     padding-left: 6px;
     padding-right: 6px;
@@ -73,18 +93,14 @@
     height: 35px;
 }
 
-.button-column-header {
-    padding: 0px !important;
+/***** Text input *****/
+.input-error {
+    border-color: red;
+    border-width: 2px;
 }
 
-.button-column-cell {
-    padding-left: 2px !important;
-    padding-right: 2px !important;
-}
-
-body {
-    height: 100vh;
-    background-color: #F5F5F5;
+.input-error-help-message {
+    font-weight: 700;
 }
 
 /** DEFAULT STYLES */

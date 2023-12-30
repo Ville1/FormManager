@@ -13,6 +13,10 @@ import { hasStringValue, randomString } from './utils.js';
  *   number, default = 3
  * maxLength
  *   number, default = 100000
+ * error
+ *   boolean, default = false
+ * errorMessage
+ *   string|any, optional
  */
 class TextInput extends React.Component {
     constructor(props) {
@@ -51,6 +55,7 @@ class TextInput extends React.Component {
     }
 
     render() {
+        var helpTextId = this.state.elementId + '_help';
         return (
             <div className={'mb-' + (this.props.marginBottom ?? 3)}>
                 {
@@ -60,7 +65,18 @@ class TextInput extends React.Component {
                         </label>
                         : null
                 }
-                <input className="form-control" id={this.state.elementId} onChange={(event) => { this.handleChange(event.target.value); }} />
+                <input
+                    className={'form-control' + (this.props.error === true ? ' input-error' : '')}
+                    id={this.state.elementId}
+                    onChange={(event) => { this.handleChange(event.target.value); }}
+                    aria-describedby={this.props.errorMessage ? helpTextId : undefined}
+                    value={this.props.value}
+                />
+                {
+                    this.props.errorMessage ?
+                        <div id={helpTextId} className="form-text input-error-help-message">{this.props.errorMessage}</div>
+                        : null
+                }
             </div>
         );
     }

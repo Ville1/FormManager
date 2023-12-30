@@ -12,6 +12,11 @@ namespace FormManager.Services
             this.context = context;
         }
 
+        public void SaveChanges()
+        {
+            context.SaveChanges();
+        }
+
         private UserManager? users;
         public UserManager Users
         {
