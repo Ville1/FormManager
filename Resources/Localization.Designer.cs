@@ -232,6 +232,15 @@ namespace FormManager.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Validation error.
+        /// </summary>
+        public static string ValidationError {
+            get {
+                return ResourceManager.GetString("ValidationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Video game.
         /// </summary>
         public static string VideoGame {

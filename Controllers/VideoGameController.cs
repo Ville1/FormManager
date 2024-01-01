@@ -3,6 +3,7 @@ using FormManager.Data.HttpData.Request;
 using FormManager.Data.HttpData.Response;
 using FormManager.Data.Models.Forms;
 using FormManager.Services;
+using FormManager.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -80,7 +81,12 @@ namespace FormManager.Controllers
         [Authorize(AuthPolicy.Basic)]
         public ActionResult Save([FromBody] VideoGameRequestData data)
         {
-            //TODO: Validate
+            //Validate
+            ValidationErrorResponse validationErrors = Validate(data);
+            if(validationErrors.Errors.Count != 0) {
+                //Validation failed
+                return ErrorResult(validationErrors);
+            }
 
             VideoGame newData = VideoGame.FromRequestData(data);
             if (data.Id == Guid.Empty) {
@@ -99,6 +105,16 @@ namespace FormManager.Controllers
             }
 
             return Json(data.Id);
+        }
+
+        private ValidationErrorResponse Validate(VideoGameRequestData data)
+        {
+            FormValidator validator = new FormValidator(data);
+
+            //Name
+            validator.IsRequired<string>("Name");
+
+            return validator.Response;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using FormManager.Data.Models;
+﻿using FormManager.Data.HttpData.Response;
+using FormManager.Data.Models;
 using FormManager.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -41,6 +42,12 @@ namespace FormManager.Controllers
                 }
                 return user;
             }
+        }
+
+        protected ActionResult ErrorResult(ValidationErrorResponse errors, int statusCode = 403)
+        {
+            Response.StatusCode = statusCode;
+            return Json(errors);
         }
     }
 

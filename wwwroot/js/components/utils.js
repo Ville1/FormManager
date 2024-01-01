@@ -46,14 +46,15 @@ export function randomString(length) {
  * @param {string} url Appended after baseUrl
  * @param {Object} parameters
  * @param {string} parameters.resultsProperty If not provided, response body is not read
+ * @param {string} parameters.errorResultsProperty If provided and response status is not in successStatus, response body is stored in this property. Can be same as resultsProperty.
  * @param {string} parameters.loadingProperty
- * @param {string} parameters.errorProperty
+ * @param {string} parameters.errorProperty If provided, this gets set to true in case an error occurs
  * @param {string} parameters.responseErrorMessageProperty Default = 'message'
  * @param {string} parameters.errorStateMessageProperty If this is provided, response status is not in successStatus array and response body has responseErrorMessageProperty, error message gets set to this property in state
  * @param {boolean} parameters.overwriteErrorProperty Default = true. If set to false, error property will not be set from true to false on successful fetch.
  * @param {Array<number>} parameters.successStatus Default = [200]
  * @param {string} parameters.logErrorMessage
- * @param {Function} parameters.callback Parameter = boolean (true if success, false if error)
+ * @param {Function} parameters.callback Parameters: boolean (true if success, false if error), Object|null response data
  * @param {string} parameters.method Can be used as an alternative to init.method
  * @param {Object} parameters.body Can be used as an alternative to init.body and JSON.stringify
  * @param {RequestInit} init Parameters for fetch-function
@@ -65,7 +66,6 @@ export function stateFetch(component, url, parameters, init) {
     parameters.overwriteErrorProperty = parameters.overwriteErrorProperty !== false;
     parameters.successStatus = Array.isArray(parameters.successStatus) && parameters.successStatus.length !== 0 ? parameters.successStatus : [200];
     init = init ?? {};
-    var readBody = hasStringValue(parameters.resultsProperty);
 
     if (hasStringValue(parameters.method)) {
         init.method = parameters.method;
@@ -103,13 +103,16 @@ export function stateFetch(component, url, parameters, init) {
                     }
                     error = true;
                 }
-                return response.json();
+                return (
+                    response.headers.get("content-type") !== null && response.headers.get("content-type").indexOf('application/json') !== -1 ?
+                        response.json() : null
+                );
             })
             .then(data => {
                 //State after fetch
                 var postFetchState = {};
 
-                if (readBody && !error) {
+                if (hasStringValue(parameters.resultsProperty) && !error) {
                     //Successfully fetched data from batckend, set results to state
                     postFetchState[parameters.resultsProperty] = data;
                 }
@@ -131,9 +134,14 @@ export function stateFetch(component, url, parameters, init) {
                     postFetchState[parameters.errorStateMessageProperty] = data[parameters.responseErrorMessageProperty];
                 }
 
+                if (hasStringValue(parameters.errorResultsProperty) && error) {
+                    //Set error results
+                    postFetchState[parameters.errorResultsProperty] = data;
+                }
+
                 component.setState(postFetchState, () => {
                     if (typeof parameters.callback === 'function') {
-                        parameters.callback(!error);
+                        parameters.callback(!error, data);
                     }
                 });
             })

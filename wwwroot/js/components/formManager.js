@@ -338,17 +338,39 @@ class FormManager extends React.Component {
         stateFetch(this, this.props.url, {
             method: 'POST',
             loadingProperty: 'saving',
-            errorProperty: 'error',
-            resultsProperty: 'responseData',
             body: body,
-            callback: (success) => {
+            callback: (success, data) => {
                 if (success) {
                     //TODO: Show saved-message
 
                     this.setState({
-                        id: this.state.responseData,
+                        id: data,
                         currentState: formState.edit
                     });
+                } else {
+                    //Error
+                    if (!data || !data.errors) {
+                        //No validation errors, show generic error message
+                        this.setState({
+                            error: true
+                        });
+                    } else {
+                        //Show validation errors
+                        var formData = this.copyData();
+
+                        for (var errorPropertyName in data.errors) {
+                            var errorFormData = formData.find(x => x.property === errorPropertyName);
+                            if (errorFormData) {
+                                errorFormData.errors = data.errors[errorPropertyName].map(errorMessage => { return localization.ValidationError + ': ' + errorMessage; });
+                            } else {
+                                this.logError('Backend validation returned a reference to an unexistent property: \"' + errorPropertyName + '\"');
+                            }
+                        }
+
+                        this.setState({
+                            data: formData
+                        });
+                    }
                 }
             }
         });
