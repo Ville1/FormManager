@@ -57,10 +57,7 @@ class Dropdown extends React.Component {
             //Put the selected value first in the array, to show it as selected
             options = options.filter(option => option.id !== selected.id);
             options.splice(0, 0, selected);
-            console.log(options);
         }
-        console.log(options);
-        console.log(this.props.selected);
 
         return (
             <div className={'mb-' + (this.props.marginBottom ?? 3)}>
