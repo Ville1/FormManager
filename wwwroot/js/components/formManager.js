@@ -2,6 +2,7 @@
 import { hasStringValue, toInt, stateFetch, emptyGuid } from './utils.js';
 import ToolBar from './toolBar.js';
 import TextInput from './textInput.js';
+import Toast from './toast.js';
 
 var formState = {
     new: 'new',
@@ -59,6 +60,9 @@ class FormManager extends React.Component {
 
         //Initialize form data
         this.initializeData();
+
+        //Ref for showing toast messages
+        this.toast = React.createRef();
     }
 
     componentDidMount() {
@@ -341,8 +345,12 @@ class FormManager extends React.Component {
             body: body,
             callback: (success, data) => {
                 if (success) {
-                    //TODO: Show saved-message
-
+                    var toastMessage = this.state.currentState === formState.new ? localization.FormSavedToastMessageNew : localization.FormSavedToastMessagePreExisting;
+                    toastMessage = toastMessage.replace('[name]', hasStringValue(this.props.title) ? this.props.title.toLowerCase() : '???');
+                    this.toast.current.show({
+                        title: localization.FormSavedToastTitle,
+                        message: toastMessage
+                    });
                     this.setState({
                         id: data,
                         currentState: formState.edit
@@ -477,7 +485,8 @@ class FormManager extends React.Component {
                         onClick: () => { this.handleSave(); },
                         disabled: !this.canSave()
                     }
-                ]}/>
+                ]} />
+                <Toast ref={this.toast} />
             </div>
         );
     }

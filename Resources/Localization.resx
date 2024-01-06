@@ -135,6 +135,15 @@
   <data name="Forms" xml:space="preserve">
     <value>Forms</value>
   </data>
+  <data name="FormSavedToastMessageNew" xml:space="preserve">
+    <value>New [name] form saved.</value>
+  </data>
+  <data name="FormSavedToastMessagePreExisting" xml:space="preserve">
+    <value>Changes to [name] form saved.</value>
+  </data>
+  <data name="FormSavedToastTitle" xml:space="preserve">
+    <value>Saved</value>
+  </data>
   <data name="FrontPageTitle" xml:space="preserve">
     <value>Start</value>
   </data>

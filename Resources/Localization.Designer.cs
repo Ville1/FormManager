@@ -115,6 +115,33 @@ namespace FormManager.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New [name] form saved..
+        /// </summary>
+        public static string FormSavedToastMessageNew {
+            get {
+                return ResourceManager.GetString("FormSavedToastMessageNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changes to [name] form saved..
+        /// </summary>
+        public static string FormSavedToastMessagePreExisting {
+            get {
+                return ResourceManager.GetString("FormSavedToastMessagePreExisting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saved.
+        /// </summary>
+        public static string FormSavedToastTitle {
+            get {
+                return ResourceManager.GetString("FormSavedToastTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start.
         /// </summary>
         public static string FrontPageTitle {

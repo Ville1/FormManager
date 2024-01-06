@@ -5,6 +5,13 @@ export function hasStringValue(p) {
 }
 
 /**
+ * Checks if parameter is string. If it is, parameter is returned, otherwise an empty string is returned.
+ */
+export function stringCheck(p) {
+    return typeof p === 'string' ? p : '';
+}
+
+/**
  * @param {any} param
  * @param {number} defaultValue
  * @returns

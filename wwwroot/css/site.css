@@ -8,6 +8,7 @@
 
 .main-content.small {
     max-width: 800px !important;
+    position: relative;
 }
 
 body {
@@ -101,6 +102,15 @@ body {
 
 .input-error-help-message {
     font-weight: 700;
+}
+
+/***** Toast *****/
+.toast-outer-container {
+    width: 100%;
+    position: absolute;
+    top: 5px;
+    display: flex;
+    justify-content: center;
 }
 
 /** DEFAULT STYLES */

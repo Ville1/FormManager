@@ -135,6 +135,15 @@
   <data name="Forms" xml:space="preserve">
     <value>Lomakkeet</value>
   </data>
+  <data name="FormSavedToastMessageNew" xml:space="preserve">
+    <value>Uusi [name]lomake tallennettu.</value>
+  </data>
+  <data name="FormSavedToastMessagePreExisting" xml:space="preserve">
+    <value>Muutokset [name]lomakeeseen tallennettu.</value>
+  </data>
+  <data name="FormSavedToastTitle" xml:space="preserve">
+    <value>Tallennettu</value>
+  </data>
   <data name="FrontPageTitle" xml:space="preserve">
     <value>Etusivu</value>
   </data>
