@@ -8,18 +8,18 @@ namespace FormManager.Data.Models.Forms
         public string Name { get; set; } = string.Empty;
         public VideoGameGenre Genre { get; set; } = VideoGameGenre.Misc;
         public DateTime ReleaseDate { get; set; }
-
-        //TODO: Replace with Developer and Publisher - tables
-        public string DeveloperName { get; set; } = string.Empty;
-        public string PublisherName { get; set; } = string.Empty;
+        public Guid? DeveloperId { get; set; } = null;
+        public Developer? Developer { get; set; } = null;
+        public Guid? PublisherId { get; set; } = null;
+        public Publisher? Publisher { get; set; } = null;
 
         private void SetResponseDataShort(VideoGameResponseDataShort response)
         {
             response.Name = Name;
             response.Genre = Genre;
             response.ReleaseDate = ReleaseDate;
-            response.DeveloperName = DeveloperName;
-            response.PublisherName = PublisherName;
+            response.DeveloperName = Developer?.Name ?? string.Empty;
+            response.PublisherName = Publisher?.Name ?? string.Empty;
         }
 
         public VideoGameResponseDataShort ToResponseShort()

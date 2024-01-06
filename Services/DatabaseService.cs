@@ -49,5 +49,27 @@ namespace FormManager.Services
                 return videoGames;
             }
         }
+
+        private DeveloperManager? developers;
+        public DeveloperManager Developers
+        {
+            get {
+                if (developers == null) {
+                    developers = new DeveloperManager(context);
+                }
+                return developers;
+            }
+        }
+
+        private PublisherManager? publishers;
+        public PublisherManager Publishers
+        {
+            get {
+                if (publishers == null) {
+                    publishers = new PublisherManager(context);
+                }
+                return publishers;
+            }
+        }
     }
 }

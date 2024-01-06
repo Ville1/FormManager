@@ -23,5 +23,7 @@ namespace FormManager.Data
         public DbSet<LogParameter> LogParameters => Set<LogParameter>();
         public DbSet<Form> Forms => Set<Form>();
         public DbSet<VideoGame> VideoGames => Set<VideoGame>();
+        public DbSet<Developer> Developers => Set<Developer>();
+        public DbSet<Publisher> Publishers => Set<Publisher>();
     }
 }

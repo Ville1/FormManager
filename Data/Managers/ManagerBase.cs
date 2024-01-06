@@ -48,9 +48,9 @@ namespace FormManager.Data.Managers
             return dbSet.AsEnumerable();
         }
 
-        public IEnumerable<TModel> Search(Func<TModel, bool> searchFunc)
+        public virtual IEnumerable<TModel> Search(Func<TModel, bool> searchFunc)
         {
-            return dbSet.Where(searchFunc).AsEnumerable();
+            return dbSet.Where(searchFunc);
         }
     }
 }
