@@ -31,12 +31,14 @@ class Dropdown extends React.Component {
         super(props);
 
         this.state = {
-            elementId: generateElementId('TextInput')
+            elementId: generateElementId('Dropdown')
         };
+
+        this.emptyOptionId = '_EMPTY_DROPDOWN_OPTION_';
     }
 
     handleOptionClick(newId) {
-        if (typeof this.props.onChange === 'function') {
+        if (newId !== null && typeof this.props.onChange === 'function') {
             this.props.onChange(newId);
         }
     }
@@ -45,22 +47,28 @@ class Dropdown extends React.Component {
      * @returns {Array<Option>}
      */
     getOptions() {
-        return Array.isArray(this.props.options) ? this.props.options : [];
+        var options = Array.isArray(this.props.options) ? this.props.options.map(x => { return { ...x }; }) : [];
+        if (options.find(option => option.id === this.emptyOptionId)) {
+            console.log('Dropdown: Option has a disallowed id "' + this.emptyOptionId + '"');
+        }
+        return options;
     }
 
     render() {
         var helpTextId = this.state.elementId + '_help';
-        var options = this.getOptions();
+        var options = this.getOptions().map(x => { return { ...x }; });
         var selected = options.find(option => option.id === this.props.selected);
 
-        if (selected) {
-            //Put the selected value first in the array, to show it as selected
-            options = options.filter(option => option.id !== selected.id);
-            options.splice(0, 0, selected);
+        if (!selected) {
+            //Add empty value as selected
+            options.push({
+                id: this.emptyOptionId,
+                text: ''
+            });
         }
 
         return (
-            <div className={'mb-' + (this.props.marginBottom ?? 3)}>
+            <div className={'form-input mb-' + (this.props.marginBottom ?? 3)}>
                 {
                     hasStringValue(this.props.label) ?
                         <label htmlFor={this.state.elementId} className="form-label">
@@ -73,11 +81,12 @@ class Dropdown extends React.Component {
                     aria-label={hasStringValue(this.props.label) ? this.props.label : undefined}
                     id={this.state.elementId}
                     aria-describedby={this.props.errorMessage ? helpTextId : undefined}
+                    value={selected !== undefined ? selected.id : this.emptyOptionId}
                 >
                     {
                         options.map((option, index) => {
                             return (
-                                <option value={option.id} key={index} onClick={() => { this.handleOptionClick(option.id); }}>
+                                <option value={option.id} key={index} onClick={() => { this.handleOptionClick(option.id); }} className={option.id === this.emptyOptionId ? 'dropdown-hidden-option' : ''}>
                                     {option.text}
                                 </option>
                             );

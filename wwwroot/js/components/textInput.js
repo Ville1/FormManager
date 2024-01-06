@@ -44,7 +44,7 @@ class TextInput extends React.Component {
     render() {
         var helpTextId = this.state.elementId + '_help';
         return (
-            <div className={'mb-' + (this.props.marginBottom ?? 3)}>
+            <div className={'form-input mb-' + (this.props.marginBottom ?? 3)}>
                 {
                     hasStringValue(this.props.label) ?
                         <label htmlFor={this.state.elementId} className="form-label">

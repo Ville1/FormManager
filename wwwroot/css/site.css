@@ -94,6 +94,11 @@ body {
     height: 35px;
 }
 
+/***** Input *****/
+.form-input {
+    width: unset;
+}
+
 /***** Text input *****/
 .input-error {
     border-color: red;
@@ -108,6 +113,10 @@ body {
 .dropdown-error {
     border-color: red;
     border-width: 2px;
+}
+
+.dropdown-hidden-option {
+    display: none;
 }
 
 /***** Toast *****/

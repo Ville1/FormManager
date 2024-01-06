@@ -178,6 +178,15 @@ namespace FormManager.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid value selected.
+        /// </summary>
+        public static string InvalidValueSelected {
+            get {
+                return ResourceManager.GetString("InvalidValueSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading.
         /// </summary>
         public static string Loading {

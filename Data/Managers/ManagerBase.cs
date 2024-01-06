@@ -48,6 +48,11 @@ namespace FormManager.Data.Managers
             return dbSet.AsEnumerable();
         }
 
+        public IEnumerable<Guid> GetAllIds()
+        {
+            return dbSet.Select(x => x.Id).AsEnumerable();
+        }
+
         public virtual IEnumerable<TModel> Search(Func<TModel, bool> searchFunc)
         {
             return dbSet.Where(searchFunc);

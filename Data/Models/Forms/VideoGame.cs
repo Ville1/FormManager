@@ -46,7 +46,9 @@ namespace FormManager.Data.Models.Forms
         {
             return new VideoGame {
                 Id = requestData.Id,
-                Name = requestData.Name
+                Name = requestData.Name,
+                DeveloperId = requestData.DeveloperId,
+                PublisherId = requestData.PublisherId
             };
         }
     }

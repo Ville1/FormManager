@@ -30,6 +30,15 @@ namespace FormManager.Utils
             }
         }
 
+        public void InList<PropertyType>(string propertyName, IEnumerable<PropertyType> validValues)
+        {
+            PropertyInfo propertyInfo = GetPropertyInfo<PropertyType>(propertyName);
+            object? value = propertyInfo.GetValue(data);
+            if(value != null && !validValues.Contains((PropertyType)value)) {
+                AddError(propertyName, Resources.Localization.InvalidValueSelected);
+            }
+        }
+
         private void AddError(string propertyName, string errorMessage)
         {
             propertyName = propertyName.Uncapitalize();

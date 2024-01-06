@@ -102,7 +102,11 @@ namespace FormManager.Controllers
                     return StatusCode(404);
                 }
                 VideoGame oldData = DB.VideoGames.Get(data.Id);
+
                 oldData.Name = newData.Name;
+                oldData.DeveloperId = newData.DeveloperId;
+                oldData.PublisherId = newData.PublisherId;
+
                 DB.SaveChanges();
             }
 
@@ -115,6 +119,13 @@ namespace FormManager.Controllers
 
             //Name
             validator.IsRequired<string>("Name");
+
+            //Developer
+            //TODO: Fix this, so Select(x => (Guid?)x) is not required?
+            validator.InList("DeveloperId", DB.Developers.GetAllIds().Select(x => (Guid?)x));
+
+            //Publisher
+            validator.InList("PublisherId", DB.Publishers.GetAllIds().Select(x => (Guid?)x));
 
             return validator.Response;
         }
