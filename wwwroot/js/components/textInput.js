@@ -1,5 +1,5 @@
 ﻿import React from 'react';
-import { hasStringValue, randomString } from './utils.js';
+import { hasStringValue, generateElementId } from './utils.js';
 
 /**
  * Props:
@@ -17,29 +17,16 @@ import { hasStringValue, randomString } from './utils.js';
  *   boolean, default = false
  * errorMessage
  *   string|any, optional
+ * onChange
+ *   function(newValue), optional
  */
 class TextInput extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            elementId: ''
+            elementId: generateElementId('TextInput')
         };
-
-        for (var i = 0; i < 999999 && this.state.elementId.length === 0; i++) {
-            var newId = randomString(20);
-            if (document.getElementById(newId) === null) {
-                this.state.elementId = newId;
-            }
-        }
-        if (this.state.elementId.length === 0) {
-            console.log('TextInput: Failed to find a free element id');
-            this.state.elementId = 'TextInput';
-        }
-    }
-
-    componentDidMount() {
-
     }
 
     handleChange(newValue) {

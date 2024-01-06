@@ -2,5 +2,7 @@
 {
     public class VideoGameResponseData : VideoGameResponseDataShort
     {
+        public Guid? DeveloperId { get; set; }
+        public Guid? PublisherId { get; set; }
     }
 }

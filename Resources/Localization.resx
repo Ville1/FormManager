@@ -123,6 +123,9 @@
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="Developer" xml:space="preserve">
+    <value>Developer</value>
+  </data>
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
   </data>
@@ -176,6 +179,9 @@
   </data>
   <data name="Password" xml:space="preserve">
     <value>Password</value>
+  </data>
+  <data name="Publisher" xml:space="preserve">
+    <value>Publisher</value>
   </data>
   <data name="RowsPerPage" xml:space="preserve">
     <value>Rows per page:</value>

@@ -2,6 +2,7 @@
 import { hasStringValue, toInt, stateFetch, emptyGuid } from './utils.js';
 import ToolBar from './toolBar.js';
 import TextInput from './textInput.js';
+import Dropdown from './dropdown.js';
 import Toast from './toast.js';
 
 var formState = {
@@ -11,7 +12,8 @@ var formState = {
 };
 
 var inputType = {
-    text: 'text'
+    text: 'text',
+    dropdown: 'dropdown'
 };
 
 /**
@@ -31,6 +33,7 @@ class FormManager extends React.Component {
      * @property {string} type Enum: inputType, default = inputType.text
      * @property {number} maxLength Default = 100000 
      * @property {boolean} required Default = false
+     * @property {Array<any>} options
      * 
      * @typedef {Object} FormRow
      * @property {string} title
@@ -94,6 +97,10 @@ class FormManager extends React.Component {
                         dataContainer.value = '';
                         dataContainer.oldValue = '';
                         break;
+                    case inputType.dropdown:
+                        dataContainer.value = null;
+                        dataContainer.oldValue = null;
+                        break;
                     default:
                         this.logInputTypeNotImplementedError(input.type);
                         break;
@@ -128,6 +135,10 @@ class FormManager extends React.Component {
                         //Set input value
                         switch (input.type) {
                             case inputType.text:
+                                formData.value = responseData;
+                                formData.oldValue = responseData;
+                                break;
+                            case inputType.dropdown:
                                 formData.value = responseData;
                                 formData.oldValue = responseData;
                                 break;
@@ -285,11 +296,12 @@ class FormManager extends React.Component {
             }
         }
 
+        var key = 'input-' + rowIndex + '-' + elementIndex;
         switch (input.type) {
             case inputType.text:
                 return (
                     <TextInput
-                        key={'input-' + rowIndex + '-' + elementIndex}
+                        key={key}
                         label={input.label}
                         value={formData.value}
                         required={input.required}
@@ -297,6 +309,19 @@ class FormManager extends React.Component {
                         onChange={(value) => { this.handleChange(input, value); }}
                         error={showError}
                         errorMessage={errorMessage}
+                    />
+                );
+            case inputType.dropdown:
+                return (
+                    <Dropdown
+                        key={key}
+                        label={input.label}
+                        selected={formData.value}
+                        required={input.required}
+                        onChange={(id) => { this.handleChange(input, id); }}
+                        error={showError}
+                        errorMessage={errorMessage}
+                        options={input.options}
                     />
                 );
             default:
@@ -314,6 +339,9 @@ class FormManager extends React.Component {
 
         switch (input.type) {
             case inputType.text:
+                this.getData(input.property, data).value = value;
+                break;
+            case inputType.dropdown:
                 this.getData(input.property, data).value = value;
                 break;
             default:
@@ -422,6 +450,12 @@ class FormManager extends React.Component {
                     case inputType.text:
                         if (input.required && !hasStringValue(formData.value)) {
                             //Text input is missing data
+                            formData.errors.push(localization.MissingRequiredData);
+                        }
+                        break;
+                    case inputType.dropdown:
+                        if (input.required && formData.value === null) {
+                            //No value selected in dropdown
                             formData.errors.push(localization.MissingRequiredData);
                         }
                         break;

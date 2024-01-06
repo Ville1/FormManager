@@ -21,6 +21,7 @@ namespace FormManager.Controllers
         [Authorize(AuthPolicy.Basic)]
         public ActionResult Index()
         {
+            SetViewBagDropdownValues();
             return View();
         }
 
@@ -32,6 +33,7 @@ namespace FormManager.Controllers
         [Authorize(AuthPolicy.Basic)]
         public ActionResult Form()
         {
+            SetViewBagDropdownValues();
             return View();
         }
 
@@ -115,6 +117,14 @@ namespace FormManager.Controllers
             validator.IsRequired<string>("Name");
 
             return validator.Response;
+        }
+
+        private void SetViewBagDropdownValues()
+        {
+            ViewBag.DevelopersJson = string.Format("[{0}]", string.Join(", ", DB.Developers.GetAll().OrderBy(developer => developer.Name)
+                .Select(developer => { return string.Format("{{ id: '{0}', text: '{1}' }}", developer.Id, developer.Name); })));
+            ViewBag.PublishersJson = string.Format("[{0}]", string.Join(", ", DB.Publishers.GetAll().OrderBy(publisher => publisher.Name)
+                .Select(publisher => { return string.Format("{{ id: '{0}', text: '{1}' }}", publisher.Id, publisher.Name); })));
         }
     }
 }

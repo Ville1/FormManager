@@ -35,6 +35,10 @@ namespace FormManager.Data.Models.Forms
             VideoGameResponseData response = new VideoGameResponseData();
             SetResponseDataShort(response);
             SetHttpData(response);
+
+            response.DeveloperId = DeveloperId;
+            response.PublisherId = PublisherId;
+
             return response;
         }
 

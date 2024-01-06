@@ -1,2 +1,6 @@
-﻿<div id="root"></div>
+﻿<script type="text/javascript">
+    var pDevelopers = @Html.Raw(ViewBag.DevelopersJson);
+    var pPublishers = @Html.Raw(ViewBag.PublishersJson);
+</script>
+<div id="root"></div>
 <script type="module" src="~/js/dist/videoGameForm.js"></script>

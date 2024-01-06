@@ -48,6 +48,26 @@ export function randomString(length) {
 }
 
 /**
+ * @param {string} elementName
+ * @returns {string}
+ */
+export function generateElementId(elementName) {
+    var id = '';
+    for (var i = 0; i < 999999 && id.length === 0; i++) {
+        var newId = randomString(20);
+        if (document.getElementById(newId) === null) {
+            id = newId;
+        }
+    }
+    if (id.length === 0) {
+        console.log(elementName + ': Failed to find a free element id');
+        id = elementName;
+    }
+
+    return id;
+}
+
+/**
  * Makes a http request using fetch-function, and updates React component's state accordingly
  * @param {Object} component React component
  * @param {string} url Appended after baseUrl

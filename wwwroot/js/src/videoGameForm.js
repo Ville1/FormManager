@@ -18,6 +18,24 @@ class VideoGameForm extends React.Component {
                             label: localization.Name,
                             property: 'name',
                             required: true
+                        },
+                        {
+                            inputs: [
+                                {
+                                    label: localization.Developer,
+                                    type: 'dropdown',
+                                    property: 'developerId',
+                                    options: pDevelopers,
+                                    required: true
+                                },
+                                {
+                                    label: localization.Publisher,
+                                    type: 'dropdown',
+                                    property: 'publisherId',
+                                    options: pPublishers,
+                                    required: true
+                                }
+                            ]
                         }
                     ]}
                 />

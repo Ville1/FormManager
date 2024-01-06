@@ -104,6 +104,12 @@ body {
     font-weight: 700;
 }
 
+/***** Dropdown *****/
+.dropdown-error {
+    border-color: red;
+    border-width: 2px;
+}
+
 /***** Toast *****/
 .toast-outer-container {
     width: 100%;
