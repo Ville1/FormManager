@@ -1,6 +1,7 @@
 ﻿import React from 'react';
 import { hasStringValue, stateFetch } from './utils.js';
 import ToolBar from './toolBar.js';
+import DeleteFormModal from './deleteFormModal.js';
 
 var filterType = {
     text: 'text'
@@ -40,6 +41,7 @@ class TableManager extends React.Component {
      * @property {string} tooltip
      * @property {Function} onClick
      * @property {string} buttonClass Default = 'btn-light'
+     * @property {string} deleteFormUrl
      * 
      * @typedef {Object} Button Same as ToolBar Button
      * @property {string} text
@@ -61,8 +63,14 @@ class TableManager extends React.Component {
             },
             filters: {},
             currentPage: 0,
-            pageSize: 10
+            pageSize: 10,
+            deleteFormModal: {
+                id: '',
+                name: '',
+                url: ''
+            }
         };
+        this.state.deleteFormModal = null;
 
         this.pageSizeOptions = [5, 10, 20, 100, 500];
         this.fetchRowsDelay = 500;//ms
@@ -155,8 +163,16 @@ class TableManager extends React.Component {
     }
 
     fetchRows() {
+        //Clear timeout
         this.clearFetchRowsTimeout();
-        stateFetch(this, '/VideoGame/Search', {
+
+        //Close delete modal if open
+        this.setState({
+            deleteFormModalId: null
+        });
+
+        //Fetch rows
+        stateFetch(this, this.props.url, {
             loadingProperty: 'loadingRows',
             errorProperty: 'error',
             resultsProperty: 'results',
@@ -349,7 +365,21 @@ class TableManager extends React.Component {
                                 type="button"
                                 className={'icon-button btn ' + (hasStringValue(button.buttonClass) ? button.buttonClass : 'btn-light')}
                                 title={hasStringValue(button.tooltip) ? button.tooltip : undefined}
-                                onClick={() => { button.onClick(row); }}
+                                onClick={() => {
+                                    if (hasStringValue(button.deleteFormUrl)) {
+                                        //Show delete form modal
+                                        this.setState({
+                                            deleteFormModal: {
+                                                id: row.id,
+                                                name: row.name,
+                                                url: button.deleteFormUrl
+                                            }
+                                        });
+                                    } else {
+                                        //Use callback
+                                        button.onClick(row);
+                                    }
+                                }}
                             >
                                 <i className={button.icon}></i>
                             </button>
@@ -442,6 +472,13 @@ class TableManager extends React.Component {
                     </tfoot>
                 </table>
                 {toolbar}
+                <DeleteFormModal
+                    open={this.state.deleteFormModal !== null}
+                    url={this.state.deleteFormModal?.url}
+                    id={this.state.deleteFormModal?.id}
+                    name={this.state.deleteFormModal?.name}
+                    onClose={() => { this.setState({ deleteFormModal: null }); }}
+                />
             </div>
         );
     }

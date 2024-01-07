@@ -126,6 +126,9 @@
   <data name="Developer" xml:space="preserve">
     <value>Kehittäjä</value>
   </data>
+  <data name="Developers" xml:space="preserve">
+    <value>Kehittäjät</value>
+  </data>
   <data name="Edit" xml:space="preserve">
     <value>Muokkaa</value>
   </data>
@@ -185,6 +188,9 @@
   </data>
   <data name="Publisher" xml:space="preserve">
     <value>Julkaisija</value>
+  </data>
+  <data name="Publishers" xml:space="preserve">
+    <value>Julkaisijat</value>
   </data>
   <data name="RowsPerPage" xml:space="preserve">
     <value>Rivejä per sivu:</value>

@@ -12,6 +12,7 @@ class VideoGameList extends React.Component {
             <div className="small main-content container">
                 <h3 className="text-center">{localization.VideoGames}</h3>
                 <TableManager
+                    url="/VideoGame/Search"
                     columns={[
                         {
                             title: 'Name',
@@ -54,7 +55,7 @@ class VideoGameList extends React.Component {
                         {
                             icon: 'fa-solid fa-x',
                             tooltip: localization.Delete,
-                            onClick: (videoGame) => { }
+                            deleteFormUrl: '/VideoGame'
                         }
                     ]}
                     buttons={[

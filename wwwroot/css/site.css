@@ -21,6 +21,11 @@ body {
     background-color: #93F497;
 }
 
+.navigation-header {
+    padding-top: 10px;
+    padding-bottom: 1px;
+}
+
 /***** Tool bar *****/
 .tool-bar {
     background-color: #EBEBEB;
@@ -32,11 +37,13 @@ body {
 /***** Tables *****/
 .button-column-header {
     padding: 0px !important;
+    width: 46.35px;
 }
 
 .button-column-cell {
     padding-left: 2px !important;
     padding-right: 2px !important;
+    width: 46.35px;
 }
 
 /***** Pagination *****/

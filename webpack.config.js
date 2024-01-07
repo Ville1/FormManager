@@ -9,7 +9,11 @@ module.exports = function (_env, argv) {
             frontPage: "./wwwroot/js/src/frontPage.js",
             navigation: "./wwwroot/js/src/navigation.js",
             videoGameList: "./wwwroot/js/src/videoGameList.js",
-            videoGameForm: "./wwwroot/js/src/videoGameForm.js"
+            videoGameForm: "./wwwroot/js/src/videoGameForm.js",
+            publisherForm: "./wwwroot/js/src/publisherForm.js",
+            publisherList: "./wwwroot/js/src/publisherList.js",
+            developerForm: "./wwwroot/js/src/developerForm.js",
+            developerList: "./wwwroot/js/src/developerList.js"
         },
         output: {
             filename: '[name].js',

@@ -32,13 +32,31 @@ class Navigation extends React.Component {
                                 </a>
                                 <ul className="dropdown-menu">
                                     <li>
-                                        <h6 className="dropdown-header">{localization.VideoGames}</h6>
+                                        <h6 className="navigation-header dropdown-header">{localization.VideoGames}</h6>
                                     </li>
                                     <li>
                                         <a className="dropdown-item" href={baseUrl + '/VideoGame/Form'}>{localization.New}</a>
                                     </li>
                                     <li>
                                         <a className="dropdown-item" href={baseUrl + '/VideoGame/Index'}>{localization.Browse}</a>
+                                    </li>
+                                    <li>
+                                        <h6 className="navigation-header dropdown-header">{localization.Developers}</h6>
+                                    </li>
+                                    <li>
+                                        <a className="dropdown-item" href={baseUrl + '/Developer/Form'}>{localization.New}</a>
+                                    </li>
+                                    <li>
+                                        <a className="dropdown-item" href={baseUrl + '/Developer/Index'}>{localization.Browse}</a>
+                                    </li>
+                                    <li>
+                                        <h6 className="navigation-header dropdown-header">{localization.Publishers}</h6>
+                                    </li>
+                                    <li>
+                                        <a className="dropdown-item" href={baseUrl + '/Publisher/Form'}>{localization.New}</a>
+                                    </li>
+                                    <li>
+                                        <a className="dropdown-item" href={baseUrl + '/Publisher/Index'}>{localization.Browse}</a>
                                     </li>
                                 </ul>
                             </li>

@@ -88,6 +88,15 @@ namespace FormManager.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Developers.
+        /// </summary>
+        public static string Developers {
+            get {
+                return ResourceManager.GetString("Developers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         public static string Edit {
@@ -264,6 +273,15 @@ namespace FormManager.Resources {
         public static string Publisher {
             get {
                 return ResourceManager.GetString("Publisher", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Publishers.
+        /// </summary>
+        public static string Publishers {
+            get {
+                return ResourceManager.GetString("Publishers", resourceCulture);
             }
         }
         
