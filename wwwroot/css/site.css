@@ -135,6 +135,16 @@ body {
     justify-content: center;
 }
 
+/** Modal */
+.modal-dimmer {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    background-color: #000000;
+    opacity: 0.3;
+}
+
 /** DEFAULT STYLES */
 /* Set padding to keep content from hitting the edges */
 .body-content {

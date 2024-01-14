@@ -168,7 +168,7 @@ class TableManager extends React.Component {
 
         //Close delete modal if open
         this.setState({
-            deleteFormModalId: null
+            deleteFormModal: null
         });
 
         //Fetch rows
@@ -477,7 +477,7 @@ class TableManager extends React.Component {
                     url={this.state.deleteFormModal?.url}
                     id={this.state.deleteFormModal?.id}
                     name={this.state.deleteFormModal?.name}
-                    onClose={() => { this.setState({ deleteFormModal: null }); }}
+                    onCloseClick={() => { this.setState({ deleteFormModal: null }); }}
                 />
             </div>
         );
