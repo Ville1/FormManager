@@ -113,6 +113,60 @@ namespace FormManager.Controllers
             return Json(data.Id);
         }
 
+        /// <summary>
+        /// Check if video game can be deleted
+        /// </summary>
+        [HttpGet]
+        [Route("/VideoGame/DeleteCheck")]
+        [Authorize(AuthPolicy.Basic)]
+        public ActionResult DeleteCheck(Guid id)
+        {
+            if (!DB.VideoGames.Has(id)) {
+                //Video game with this id does not exist
+                return StatusCode(410);
+            }
+            VideoGame videoGame = DB.VideoGames.Get(id);
+            List<string> deleteErrors;
+            if (!videoGame.CanBeDeleted(out deleteErrors)) {
+                //Can't be deleted
+                return Json(new DeleteErrorsResponse() {
+                    Errors = deleteErrors
+                });
+            }
+            return Json(new DeleteErrorsResponse());
+        }
+
+        /// <summary>
+        /// Delete video game
+        /// </summary>
+        [HttpDelete]
+        [Route("/VideoGame")]
+        [Authorize(AuthPolicy.Basic)]
+        public ActionResult Delete(Guid id)
+        {
+            if (!DB.VideoGames.Has(id)) {
+                //Video game with this id does not exist
+                return StatusCode(404);
+            }
+
+            //Get video game data
+            VideoGame videoGame = DB.VideoGames.Get(id);
+
+            //Check if it can be deleted
+            List<string> deleteErrors;
+            if(!videoGame.CanBeDeleted(out deleteErrors)) {
+                //Can't be deleted
+                return ErrorResult(new DeleteErrorsResponse() {
+                    Errors = deleteErrors
+                });
+            }
+
+            //Delete
+            DB.VideoGames.Delete(videoGame);
+
+            return StatusCode(200);
+        }
+
         private ValidationErrorResponse Validate(VideoGameRequestData data)
         {
             FormValidator validator = new FormValidator(data);

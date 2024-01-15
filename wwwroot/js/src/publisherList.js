@@ -13,6 +13,7 @@ class PublisherList extends React.Component {
                 <h3 className="text-center">{localization.Publishers}</h3>
                 <TableManager
                     url="/Publisher/Search"
+                    typeName={localization.Publisher}
                     columns={[
                         {
                             title: 'Name',

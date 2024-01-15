@@ -61,11 +61,38 @@ namespace FormManager.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Already deleted.
+        /// </summary>
+        public static string AlreadyDeleted {
+            get {
+                return ResourceManager.GetString("AlreadyDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Browse.
         /// </summary>
         public static string Browse {
             get {
                 return ResourceManager.GetString("Browse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deletion is not possible.
+        /// </summary>
+        public static string CantBeDeletedMessage {
+            get {
+                return ResourceManager.GetString("CantBeDeletedMessage", resourceCulture);
             }
         }
         
@@ -79,11 +106,47 @@ namespace FormManager.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete [name]?.
+        /// </summary>
+        public static string ConfirmDeleteMessage {
+            get {
+                return ResourceManager.GetString("ConfirmDeleteMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete [name].
+        /// </summary>
+        public static string ConfirmDeleteModalTitle {
+            get {
+                return ResourceManager.GetString("ConfirmDeleteModalTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
         public static string Delete {
             get {
                 return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Used by [type] [name].
+        /// </summary>
+        public static string DeleteErrorMessageUsedBy {
+            get {
+                return ResourceManager.GetString("DeleteErrorMessageUsedBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deletion failed.
+        /// </summary>
+        public static string DeleteFailed {
+            get {
+                return ResourceManager.GetString("DeleteFailed", resourceCulture);
             }
         }
         

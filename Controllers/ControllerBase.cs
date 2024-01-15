@@ -49,6 +49,12 @@ namespace FormManager.Controllers
             Response.StatusCode = statusCode;
             return Json(errors);
         }
+
+        protected ActionResult ErrorResult(DeleteErrorsResponse errors, int statusCode = 403)
+        {
+            Response.StatusCode = statusCode;
+            return Json(errors);
+        }
     }
 
     public class AuthPolicy

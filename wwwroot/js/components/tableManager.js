@@ -2,6 +2,7 @@
 import { hasStringValue, stateFetch } from './utils.js';
 import ToolBar from './toolBar.js';
 import DeleteFormModal from './deleteFormModal.js';
+import Toast from './toast.js';
 
 var filterType = {
     text: 'text'
@@ -15,6 +16,8 @@ var filterType = {
  *   Url appended after baseUrl, that is used for fetching data for the table.
  * columns
  *   array<Column>, required
+ * typeName
+ *   string, required
  * filters
  *   array<Filter>, optional
  * rowButtons
@@ -41,7 +44,7 @@ class TableManager extends React.Component {
      * @property {string} tooltip
      * @property {Function} onClick
      * @property {string} buttonClass Default = 'btn-light'
-     * @property {string} deleteFormUrl
+     * @property {string} deleteFormUrl Then deleting, this url is called with id in url parameters and 'DELETE' - method. Then checking if delete is possible url is called with '/DeleteCheck' and 'GET' - method
      * 
      * @typedef {Object} Button Same as ToolBar Button
      * @property {string} text
@@ -67,7 +70,8 @@ class TableManager extends React.Component {
             deleteFormModal: {
                 id: '',
                 name: '',
-                url: ''
+                url: '',
+                deleteErrors: []
             }
         };
         this.state.deleteFormModal = null;
@@ -75,6 +79,9 @@ class TableManager extends React.Component {
         this.pageSizeOptions = [5, 10, 20, 100, 500];
         this.fetchRowsDelay = 500;//ms
         this.fetchTimeOutId = null;
+
+        //Ref for showing toast messages
+        this.toast = React.createRef();
     }
 
     componentDidMount() {
@@ -285,6 +292,38 @@ class TableManager extends React.Component {
         });
     }
 
+    /**
+     * Show a toast with error messages
+     * @param {Array<string>} errors
+     */
+    handleDeleteError(errors) {
+        var message;
+        if (errors.length === 0) {
+            message = errors[0];
+        } else {
+            message = (
+                <ul>
+                    {errors.map(error => { return (<li>{error}</li>); })}
+                </ul>
+            );
+        }
+        this.toast.current.show({
+            title: localization.DeleteFailed,
+            message: message
+        });
+    }
+
+    /**
+     * Refresh list, if row with this id is currently visible
+     * @param {string} id
+     */
+    handleDelete(id) {
+        if (this.state.results.rows.find(row => row.id === id)) {
+            //Form deleted, refresh list
+            this.fetchRows();
+        }
+    }
+
     render() {
         var columns = this.getColumns();
         var filters = this.getFilters();
@@ -372,7 +411,8 @@ class TableManager extends React.Component {
                                             deleteFormModal: {
                                                 id: row.id,
                                                 name: row.name,
-                                                url: button.deleteFormUrl
+                                                url: button.deleteFormUrl,
+                                                deleteErrors: row.deleteErrors
                                             }
                                         });
                                     } else {
@@ -476,9 +516,14 @@ class TableManager extends React.Component {
                     open={this.state.deleteFormModal !== null}
                     url={this.state.deleteFormModal?.url}
                     id={this.state.deleteFormModal?.id}
+                    title={this.props.typeName}
                     name={this.state.deleteFormModal?.name}
+                    deleteErrors={this.state.deleteFormModal?.deleteErrors}
                     onCloseClick={() => { this.setState({ deleteFormModal: null }); }}
+                    onError={(errors) => { this.handleDeleteError(errors); }}
+                    onDelete={(id) => { this.handleDelete(id); }}
                 />
+                <Toast ref={this.toast} />
             </div>
         );
     }

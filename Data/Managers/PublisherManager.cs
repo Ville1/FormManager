@@ -4,6 +4,6 @@ namespace FormManager.Data.Managers
 {
     public class PublisherManager : ManagerBase<Publisher>
     {
-        public PublisherManager(Database database) : base(database, database.Publishers) { }
+        public PublisherManager(Database database) : base(database, database.Publishers, "VideoGames") { }
     }
 }

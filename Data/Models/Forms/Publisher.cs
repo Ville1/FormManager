@@ -23,5 +23,17 @@ namespace FormManager.Data.Models.Forms
                 Name = requestData.Name
             };
         }
+
+        public override bool CanBeDeleted(out List<string> errors)
+        {
+            errors = new List<string>();
+            if (VideoGames.Count == 0) {
+                return true;
+            }
+            foreach (VideoGame videoGame in VideoGames) {
+                errors.Add(Resources.Localization.DeleteErrorMessageUsedBy.Replace("[type]", Resources.Localization.VideoGame.ToLower()).Replace("[name]", videoGame.Name));
+            }
+            return false;
+        }
     }
 }

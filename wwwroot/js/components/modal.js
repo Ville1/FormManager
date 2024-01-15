@@ -6,6 +6,7 @@ import { hasStringValue, stringCheck } from './utils.js';
  * @property {string} text
  * @property {Function} onClick
  * @property {string} className Default = 'btn-primary'
+ * @property {boolean} disabled
  * 
  * @param {Object} props
  * @param {boolean} props.open Optional, default = false
@@ -35,7 +36,10 @@ export default function Modal(props) {
 
         if (Array.isArray(props.buttons)) {
             for (var i = 0; i < props.buttons.length; i++) {
-                buttons.push({ ...props.buttons[i] });
+                buttons.push({
+                    ...props.buttons[i],
+                    className: hasStringValue(props.buttons[i].className) ? props.buttons[i].className : 'btn-primary'
+                });
             }
         }
 
@@ -44,7 +48,8 @@ export default function Modal(props) {
             buttons.push({
                 text: props.closeButtonText === undefined ? localization.Close : props.closeButtonText,
                 onClick: () => { handleCloseClick(); },
-                className: 'btn-secondary'
+                className: 'btn-secondary',
+                disabled: false
             });
         }
 
@@ -53,7 +58,8 @@ export default function Modal(props) {
             buttons.push({
                 text: hasStringValue(props.okButtonText) ? props.okButtonText : localization.Ok,
                 onClick: props.onOkClick,
-                className: 'btn-primary'
+                className: 'btn-primary',
+                disabled: false
             });
         }
 
@@ -84,7 +90,7 @@ export default function Modal(props) {
                         {
                             getButtons().map((button, index) => {
                                 return (
-                                    <button type="button" key={index} className={'btn ' + button.className} onClick={button.onClick}>{button.text}</button>
+                                    <button type="button" key={index} disabled={button.disabled === true ? true : undefined} className={'btn ' + button.className} onClick={button.onClick}>{button.text}</button>
                                 );
                             })
                         }

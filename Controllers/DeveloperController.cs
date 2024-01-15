@@ -109,6 +109,60 @@ namespace FormManager.Controllers
             return Json(data.Id);
         }
 
+        /// <summary>
+        /// Check if developer can be deleted
+        /// </summary>
+        [HttpGet]
+        [Route("/Developer/DeleteCheck")]
+        [Authorize(AuthPolicy.Basic)]
+        public ActionResult DeleteCheck(Guid id)
+        {
+            if (!DB.Developers.Has(id)) {
+                //Developer with this id does not exist
+                return StatusCode(410);
+            }
+            Developer developer = DB.Developers.Get(id);
+            List<string> deleteErrors;
+            if (!developer.CanBeDeleted(out deleteErrors)) {
+                //Can't be deleted
+                return Json(new DeleteErrorsResponse() {
+                    Errors = deleteErrors
+                });
+            }
+            return Json(new DeleteErrorsResponse());
+        }
+
+        /// <summary>
+        /// Delete developer
+        /// </summary>
+        [HttpDelete]
+        [Route("/Developer")]
+        [Authorize(AuthPolicy.Basic)]
+        public ActionResult Delete(Guid id)
+        {
+            if (!DB.Developers.Has(id)) {
+                //Developer with this id does not exist
+                return StatusCode(404);
+            }
+
+            //Get developer data
+            Developer developer = DB.Developers.Get(id);
+
+            //Check if it can be deleted
+            List<string> deleteErrors;
+            if (!developer.CanBeDeleted(out deleteErrors)) {
+                //Can't be deleted
+                return ErrorResult(new DeleteErrorsResponse() {
+                    Errors = deleteErrors
+                });
+            }
+
+            //Delete
+            DB.Developers.Delete(developer);
+
+            return StatusCode(200);
+        }
+
         private ValidationErrorResponse Validate(DeveloperRequestData data)
         {
             FormValidator validator = new FormValidator(data);

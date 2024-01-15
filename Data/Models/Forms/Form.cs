@@ -13,6 +13,16 @@ namespace FormManager.Data.Models.Forms
             data.Id = Id;
             data.CreatorId = CreatorId;
             data.Created = Created;
+
+            List<string> deleteErrors;
+            data.CanBeDeleted = CanBeDeleted(out deleteErrors);
+            data.DeleteErrors = deleteErrors;
+        }
+
+        public virtual bool CanBeDeleted(out List<string> errors)
+        {
+            errors = new List<string>();
+            return true;
         }
     }
 }

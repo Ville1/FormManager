@@ -13,6 +13,7 @@ class VideoGameList extends React.Component {
                 <h3 className="text-center">{localization.VideoGames}</h3>
                 <TableManager
                     url="/VideoGame/Search"
+                    typeName={localization.VideoGame}
                     columns={[
                         {
                             title: 'Name',

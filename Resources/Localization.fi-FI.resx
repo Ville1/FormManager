@@ -117,11 +117,32 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AlreadyDeleted" xml:space="preserve">
+    <value>Kohde on jo poistettu</value>
+  </data>
   <data name="Browse" xml:space="preserve">
     <value>Selaa</value>
   </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Peruuta</value>
+  </data>
+  <data name="CantBeDeletedMessage" xml:space="preserve">
+    <value>Poistaminen ei ole mahdollista</value>
+  </data>
+  <data name="ConfirmDeleteMessage" xml:space="preserve">
+    <value>Haluatko varmasti poistaa kohteen [name]?</value>
+  </data>
+  <data name="ConfirmDeleteModalTitle" xml:space="preserve">
+    <value>Poista [name]</value>
+  </data>
   <data name="Delete" xml:space="preserve">
     <value>Poista</value>
+  </data>
+  <data name="DeleteErrorMessageUsedBy" xml:space="preserve">
+    <value>Käytössä: [type] [name]</value>
+  </data>
+  <data name="DeleteFailed" xml:space="preserve">
+    <value>Poisto epäonnistui</value>
   </data>
   <data name="Developer" xml:space="preserve">
     <value>Kehittäjä</value>

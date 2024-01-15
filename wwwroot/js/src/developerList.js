@@ -13,6 +13,7 @@ class DeveloperList extends React.Component {
                 <h3 className="text-center">{localization.Developers}</h3>
                 <TableManager
                     url="/Developer/Search"
+                    typeName={localization.Developer}
                     columns={[
                         {
                             title: 'Name',

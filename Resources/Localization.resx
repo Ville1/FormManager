@@ -117,14 +117,35 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AlreadyDeleted" xml:space="preserve">
+    <value>Already deleted</value>
+  </data>
   <data name="Browse" xml:space="preserve">
     <value>Browse</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="CantBeDeletedMessage" xml:space="preserve">
+    <value>Deletion is not possible</value>
   </data>
   <data name="Close" xml:space="preserve">
     <value>Close</value>
   </data>
+  <data name="ConfirmDeleteMessage" xml:space="preserve">
+    <value>Are you sure you want to delete [name]?</value>
+  </data>
+  <data name="ConfirmDeleteModalTitle" xml:space="preserve">
+    <value>Delete [name]</value>
+  </data>
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
+  </data>
+  <data name="DeleteErrorMessageUsedBy" xml:space="preserve">
+    <value>Used by [type] [name]</value>
+  </data>
+  <data name="DeleteFailed" xml:space="preserve">
+    <value>Deletion failed</value>
   </data>
   <data name="Developer" xml:space="preserve">
     <value>Developer</value>
