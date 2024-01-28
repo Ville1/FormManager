@@ -1,6 +1,6 @@
 ﻿namespace FormManager.Data
 {
-    public enum LogEventType { Login }
+    public enum LogEventType { Login, FormChanged }
 
     public enum FilterType { Text }
 

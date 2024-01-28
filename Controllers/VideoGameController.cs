@@ -90,24 +90,18 @@ namespace FormManager.Controllers
                 return ErrorResult(validationErrors);
             }
 
+            //Parse request data
             VideoGame newData = VideoGame.FromRequestData(data);
+
             if (data.Id == Guid.Empty) {
                 //New video game
                 data.Id = DB.VideoGames.Add(newData);
             } else {
                 //Modify a pre-existing video game
-                //Get old data
-                if (!DB.VideoGames.Has(data.Id)) {
+                if (!DB.VideoGames.Save(newData, new List<string>() { "Name", "DeveloperId", "PublisherId" })) {
                     //Video game with this id does not exist
                     return StatusCode(404);
                 }
-                VideoGame oldData = DB.VideoGames.Get(data.Id);
-
-                oldData.Name = newData.Name;
-                oldData.DeveloperId = newData.DeveloperId;
-                oldData.PublisherId = newData.PublisherId;
-
-                DB.SaveChanges();
             }
 
             return Json(data.Id);

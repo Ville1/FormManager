@@ -1,4 +1,5 @@
-﻿using FormManager.Data;
+﻿using FormManager.Controllers;
+using FormManager.Data;
 using FormManager.Data.Managers;
 
 namespace FormManager.Services
@@ -6,6 +7,8 @@ namespace FormManager.Services
     public class DatabaseService
     {
         private readonly Database context;
+
+        public ControllerBase? Controller { get; set; }
 
         public DatabaseService(Database context)
         {
@@ -22,7 +25,7 @@ namespace FormManager.Services
         {
             get {
                 if(users == null) {
-                    users = new UserManager(context);
+                    users = new UserManager(context, Controller);
                 }
                 return users;
             }
@@ -33,7 +36,7 @@ namespace FormManager.Services
         {
             get {
                 if (log == null) {
-                    log = new LogManager(context);
+                    log = new LogManager(context, Controller);
                 }
                 return log;
             }
@@ -44,7 +47,7 @@ namespace FormManager.Services
         {
             get {
                 if (videoGames == null) {
-                    videoGames = new VideoGameManager(context);
+                    videoGames = new VideoGameManager(context, Controller);
                 }
                 return videoGames;
             }
@@ -55,7 +58,7 @@ namespace FormManager.Services
         {
             get {
                 if (developers == null) {
-                    developers = new DeveloperManager(context);
+                    developers = new DeveloperManager(context, Controller);
                 }
                 return developers;
             }
@@ -66,7 +69,7 @@ namespace FormManager.Services
         {
             get {
                 if (publishers == null) {
-                    publishers = new PublisherManager(context);
+                    publishers = new PublisherManager(context, Controller);
                 }
                 return publishers;
             }

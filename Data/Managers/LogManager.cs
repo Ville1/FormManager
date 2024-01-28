@@ -1,4 +1,5 @@
-﻿using FormManager.Data.Models.Log;
+﻿using FormManager.Controllers;
+using FormManager.Data.Models.Log;
 using Microsoft.EntityFrameworkCore;
 
 namespace FormManager.Data.Managers
@@ -7,22 +8,17 @@ namespace FormManager.Data.Managers
     {
         private DbSet<LogParameter> parameterDbSet;
 
-        public LogManager(Database database) : base(database, database.Logs, false)
+        public LogManager(Database database, ControllerBase? controller) : base(database, controller, database.Logs, false)
         {
             parameterDbSet = database.LogParameters;
         }
 
+        /// <summary>
+        /// Add log and save changes
+        /// </summary>
         public void Write(Log log)
         {
             Add(log);
-        }
-
-        public static DateTime TimeStamp
-        {
-            get {
-                //This can be changed to DateTime.UtcNow, if we don't want to use local time
-                return DateTime.Now;
-            }
         }
     }
 }

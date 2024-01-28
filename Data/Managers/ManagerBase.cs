@@ -1,5 +1,11 @@
-﻿using FormManager.Data.Models;
+﻿using FormManager.Controllers;
+using FormManager.Data.Models;
+using FormManager.Data.Models.Forms;
+using FormManager.Data.Models.Log;
+using FormManager.Data.Models.Log.Events;
+using FormManager.Utils;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace FormManager.Data.Managers
 {
@@ -9,26 +15,30 @@ namespace FormManager.Data.Managers
         protected DbSet<TModel> dbSet;
         protected List<string> defaultIncludePaths;
         protected bool logEvents;
+        protected ControllerBase? controller;
 
-        public ManagerBase(Database database, DbSet<TModel> dbSet, List<string> defaultIncludePaths, bool logEvents = true)
+        public ManagerBase(Database database, ControllerBase? controller, DbSet<TModel> dbSet, List<string> defaultIncludePaths, bool logEvents = true)
         {
             this.database = database;
+            this.controller = controller;
             this.dbSet = dbSet;
             this.defaultIncludePaths = defaultIncludePaths.Select(x => x).ToList();
             this.logEvents = logEvents;
         }
 
-        public ManagerBase(Database database, DbSet<TModel> dbSet, string defaultIncludePath, bool logEvents = true)
+        public ManagerBase(Database database, ControllerBase? controller, DbSet<TModel> dbSet, string defaultIncludePath, bool logEvents = true)
         {
             this.database = database;
+            this.controller = controller;
             this.dbSet = dbSet;
             defaultIncludePaths = new List<string>() { defaultIncludePath };
             this.logEvents = logEvents;
         }
 
-        public ManagerBase(Database database, DbSet<TModel> dbSet, bool logEvents = true)
+        public ManagerBase(Database database, ControllerBase? controller, DbSet<TModel> dbSet, bool logEvents = true)
         {
             this.database = database;
+            this.controller = controller;
             this.dbSet = dbSet;
             defaultIncludePaths = new List<string>();
             this.logEvents = logEvents;
@@ -64,14 +74,81 @@ namespace FormManager.Data.Managers
 
         public Guid Add(TModel newItem)
         {
+            if (newItem is Form form) {
+                //This is a form
+                form.Created = Logging.TimeStamp;
+                if(UserIsLoggedIn) {
+                    //User is logged in
+                    form.CreatorId = UserId;
+                } else {
+                    //System user
+                    form.CreatorId = Guid.Empty;
+                }
+            }
+
+            //Add to db
             dbSet.Add(newItem);
+
+            //Save changes
             database.SaveChanges();
             return newItem.Id;
         }
 
+        public bool Save(TModel newData, List<string>? saveProperties = null)
+        {
+            if (!Has(newData.Id)) {
+                //Item does not exist
+                return false;
+            }
+
+            //Get old data
+            TModel item = dbSet.First(x => x.Id == newData.Id);
+
+            //Make changes
+            //Loop through all properties
+            foreach(PropertyInfo property in item.GetType().GetProperties()) {
+                //Check if this should save changes in this property
+                if(property.CanWrite && (saveProperties == null || saveProperties.Contains(property.Name))) {
+                    //Check if there is a change in this property
+                    object? oldValue = property.GetValue(item);
+                    object? newValue = property.GetValue(newData);
+                    if((oldValue == null && newValue != null) ||//null -> not null
+                        (oldValue != null && newValue == null) ||//not null -> null
+                        (oldValue != null && newValue != null && !oldValue.Equals(newValue))) {//Both are not null, but value has changed
+                        //Set new value
+                        property.SetValue(item, newValue);
+
+                        if (item is Form form) {
+                            //This is a form, log change
+                            database.Logs.Add(new FormChangedEvent(UserId, item.Id, oldValue?.ToString(), newValue?.ToString()));
+                        }
+                    }
+                }
+            }
+
+            //Save changes
+            database.SaveChanges();
+
+            return true;
+        }
+
         public void Delete(TModel item)
         {
+            //Remove item
             dbSet.Remove(item);
+
+            if (item is Form form) {
+                //This is a form, delete log
+                IEnumerable<Log> formLog = GetFormLog(form);
+                foreach(Log log in formLog) {
+                    foreach(LogParameter parameter in log.Parameters) {
+                        database.LogParameters.Remove(parameter);
+                    }
+                    database.Logs.Remove(log);
+                }
+            }
+
+            //Save changes
             database.SaveChanges();
         }
 
@@ -96,6 +173,29 @@ namespace FormManager.Data.Managers
                 }
                 return query.Where(searchFunc);
             }
+        }
+
+        protected bool UserIsLoggedIn
+        {
+            get {
+                return controller != null && !controller.IsAnonymous;
+            }
+        }
+
+        protected Guid UserId
+        {
+            get {
+                return controller != null && !controller.IsAnonymous ? controller.User.Id : Guid.Empty;
+            }
+        }
+
+        private IEnumerable<Log> GetFormLog(Form form)
+        {
+            List<LogEventType> formEvents = new List<LogEventType>() { LogEventType.FormChanged };
+            return database.Logs.Include(log => log.Parameters).Where(log =>
+                formEvents.Contains(log.Type) &&
+                log.Parameters.Any(parameter => parameter.Key == LogParameter.Keys.FormId && parameter.Value == form.Id.ToString())
+            );
         }
     }
 }

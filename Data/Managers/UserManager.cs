@@ -1,10 +1,11 @@
-﻿using FormManager.Data.Models;
+﻿using FormManager.Controllers;
+using FormManager.Data.Models;
 
 namespace FormManager.Data.Managers
 {
     public class UserManager : ManagerBase<User>
     {
-        public UserManager(Database database) : base(database, database.Users) { }
+        public UserManager(Database database, ControllerBase? controller) : base(database, controller, database.Users) { }
 
         public bool CanLogIn(string email, string password)
         {

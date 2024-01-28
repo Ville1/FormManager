@@ -13,6 +13,7 @@ namespace FormManager.Controllers
         public ControllerBase(DatabaseService service)
         {
             DB = service;
+            DB.Controller = this;
         }
 
         public bool IsAnonymous

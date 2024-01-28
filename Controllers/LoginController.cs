@@ -1,5 +1,6 @@
 ﻿using FormManager.Data.Models;
 using FormManager.Data.Models.Log;
+using FormManager.Data.Models.Log.Events;
 using FormManager.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
