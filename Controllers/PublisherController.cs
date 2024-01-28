@@ -32,6 +32,7 @@ namespace FormManager.Controllers
         [Authorize(AuthPolicy.Basic)]
         public ActionResult Form()
         {
+            SetViewBagCurrentUser();
             return View();
         }
 
@@ -53,9 +54,9 @@ namespace FormManager.Controllers
 
             //Get results
             IEnumerable<Publisher> publishers = DB.Publishers.Search(filters.IsMatch);
-            IEnumerable<Publisher> paginatedResults = search.Paginate(publishers);
+            List<Publisher> paginatedResults = search.Paginate(publishers);
 
-            return Json(new ListResponse<PublisherResponseData>(paginatedResults.Select(x => x.ToResponse()), publishers.Count(), search.PageSize));
+            return Json(new ListResponse<PublisherResponseData>(paginatedResults.Select(x => x.ToResponse(DB)), publishers.Count(), search.PageSize));
         }
 
         /// <summary>
@@ -70,7 +71,7 @@ namespace FormManager.Controllers
                 //Publisher with this id does not exist
                 return StatusCode(404);
             }
-            return Json(DB.Publishers.Get(id).ToResponse());
+            return Json(DB.Publishers.Get(id).ToResponse(DB));
         }
 
         /// <summary>

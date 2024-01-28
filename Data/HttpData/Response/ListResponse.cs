@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace FormManager.Data.HttpData.Response
+﻿namespace FormManager.Data.HttpData.Response
 {
     public class ListResponse<DataT>
     {

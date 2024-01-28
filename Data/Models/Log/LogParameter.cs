@@ -15,6 +15,7 @@
             public string FormId = "FormId";
             public string OldValue = "OldValue";
             public string NewValue = "NewValue";
+            public string PropertyName = "PropertyName";
         }
     }
 }

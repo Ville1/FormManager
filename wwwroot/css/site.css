@@ -145,6 +145,40 @@ body {
     opacity: 0.3;
 }
 
+/** Form */
+.form-container {
+    position: relative;
+}
+
+.form-title {
+    margin-bottom: 15px;
+}
+
+.form-user-data {
+    position: absolute;
+    display: inline-block;
+    right: 5px;
+    top: 0px;
+    font-size: 12px;
+}
+
+.form-user-data > table > tr > td {
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.form-user-data > .btn {
+    padding-top: 1px;
+    padding-bottom: 1px;
+    float: right;
+    margin-top: 2px;
+    font-size: 12px;
+}
+
+.form-user-data-header {
+    font-weight: 700;
+}
+
 /** DEFAULT STYLES */
 /* Set padding to keep content from hitting the edges */
 .body-content {

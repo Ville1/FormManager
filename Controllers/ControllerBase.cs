@@ -45,6 +45,12 @@ namespace FormManager.Controllers
             }
         }
 
+        protected void SetViewBagCurrentUser()
+        {
+            ViewBag.UserId = IsAnonymous ? string.Empty : User.Id.ToString();
+            ViewBag.UserName = IsAnonymous ? string.Empty : (User.UserName ?? string.Empty);
+        }
+
         protected ActionResult ErrorResult(ValidationErrorResponse errors, int statusCode = 403)
         {
             Response.StatusCode = statusCode;

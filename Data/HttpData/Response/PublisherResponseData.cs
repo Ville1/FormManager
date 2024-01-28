@@ -1,6 +1,6 @@
 ﻿namespace FormManager.Data.HttpData.Response
 {
-    public class PublisherResponseData : FormHttpData
+    public class PublisherResponseData : FormHttpResponseData
     {
         public string Name { get; set; } = string.Empty;
     }

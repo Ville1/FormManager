@@ -30,9 +30,9 @@ namespace FormManager.Data.HttpData.Request
             return filters;
         }
 
-        public IEnumerable<TResult> Paginate<TResult>(IEnumerable<TResult> results)
+        public List<TResult> Paginate<TResult>(IEnumerable<TResult> results)
         {
-            return results.Skip(CurrentPage * PageSize).Take(PageSize);
+            return results.Skip(CurrentPage * PageSize).Take(PageSize).ToList();
         }
     }
 

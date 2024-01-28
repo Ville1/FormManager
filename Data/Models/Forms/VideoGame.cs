@@ -1,5 +1,6 @@
 ﻿using FormManager.Data.HttpData.Request;
 using FormManager.Data.HttpData.Response;
+using FormManager.Services;
 
 namespace FormManager.Data.Models.Forms
 {
@@ -22,19 +23,20 @@ namespace FormManager.Data.Models.Forms
             response.PublisherName = Publisher?.Name ?? string.Empty;
         }
 
-        public VideoGameResponseDataShort ToResponseShort()
+        public VideoGameResponseDataShort ToResponseShort(DatabaseService database)
         {
             VideoGameResponseDataShort response = new VideoGameResponseDataShort();
             SetResponseDataShort(response);
-            SetHttpData(response);
+            SetHttpData(response, database);
             return response;
         }
 
-        public VideoGameResponseData ToResponse()
+        public VideoGameResponseData ToResponse(DatabaseService database)
         {
             VideoGameResponseData response = new VideoGameResponseData();
             SetResponseDataShort(response);
-            SetHttpData(response);
+            SetHttpData(response, database);
+            SetHttpResponseLogData(response, database);
 
             response.DeveloperId = DeveloperId;
             response.PublisherId = PublisherId;

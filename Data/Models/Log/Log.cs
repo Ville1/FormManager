@@ -5,9 +5,9 @@
         public Guid Id { get; set; }
         public LogEventType Type { get; set; }
         /// <summary>
-        /// Null = system. Can also be an id of a deleted user
+        /// Guid.Empty = system. Can also be an id of a deleted user
         /// </summary>
-        public Guid? UserId { get; set; }
+        public Guid UserId { get; set; }
         public DateTime TimeStamp { get; set; }
         public ICollection<LogParameter> Parameters { get; set; } = new List<LogParameter>();
     }

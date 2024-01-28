@@ -20,6 +20,10 @@
         }
         };
         var baseUrl = '@Html.Raw(string.Format("{0}://{1}", Context.Request.Scheme, Context.Request.Host))';
+        var user = {
+            id: '@Html.Raw(ViewBag.UserId)',
+            userName: '@Html.Raw(ViewBag.UserName)'
+        };
     </script>
     <div id="navigation"></div>
     <script type="module" src="~/js/dist/navigation.js"></script>

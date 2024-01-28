@@ -51,15 +51,26 @@ namespace FormManager.Data.Managers
 
         public TModel Get(Guid id)
         {
+            //Get item
+            TModel item;
             if(defaultIncludePaths.Count == 0) {
-                return dbSet.First(x => x.Id == id);
+                //No default include
+                item = dbSet.First(x => x.Id == id);
             } else {
+                //Include properties from defaultIncludePaths
                 IQueryable<TModel> query = dbSet.AsQueryable();
                 foreach(string path in defaultIncludePaths) {
                     query = query.Include(path);
                 }
-                return query.First(x => x.Id == id);
+                item = query.First(x => x.Id == id);
             }
+
+            if(item is Form form) {
+                //This is a form, include log
+                form.Log = GetFormLog(form).ToList();
+            }
+
+            return item;
         }
 
         public bool Exists(Func<TModel, bool> searchFunction)
@@ -120,7 +131,7 @@ namespace FormManager.Data.Managers
 
                         if (item is Form form) {
                             //This is a form, log change
-                            database.Logs.Add(new FormChangedEvent(UserId, item.Id, oldValue?.ToString(), newValue?.ToString()));
+                            database.Logs.Add(new FormChangedEvent(UserId, item.Id, property.Name, oldValue?.ToString(), newValue?.ToString()));
                         }
                     }
                 }
@@ -195,7 +206,7 @@ namespace FormManager.Data.Managers
             return database.Logs.Include(log => log.Parameters).Where(log =>
                 formEvents.Contains(log.Type) &&
                 log.Parameters.Any(parameter => parameter.Key == LogParameter.Keys.FormId && parameter.Value == form.Id.ToString())
-            );
+            ).OrderByDescending(log => log.TimeStamp);
         }
     }
 }

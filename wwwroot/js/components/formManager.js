@@ -4,6 +4,7 @@ import ToolBar from './toolBar.js';
 import TextInput from './textInput.js';
 import Dropdown from './dropdown.js';
 import Toast from './toast.js';
+import Modal from './modal.js';
 
 var formState = {
     new: 'new',
@@ -45,6 +46,14 @@ class FormManager extends React.Component {
      * @property {any} oldValue
      * @property {Array<string>} errors
      * @property {boolean} errorGrace True = hide error messages
+     * 
+     * @typedef {Object} LogRow
+     * @property {string} id
+     * @property {string} type
+     * @property {string} userId
+     * @property {string} userName
+     * @property {Date} timeStamp
+     * @property {string} text
      */
 
     constructor(props) {
@@ -58,7 +67,19 @@ class FormManager extends React.Component {
             id: emptyGuid,
             /** @type {Array<DataContainer>} */
             data: [],
-            responseData: {}
+            responseData: {},
+            name: '',
+            creatorId: '',
+            creatorName: '',
+            /** @type {Date} */
+            created: null,
+            editorId: '',
+            editorName: '',
+            /** @type {Date} */
+            edited: null,
+            /** @type {Array<LogRow>} */
+            log: [],
+            logModalOpen: false
         };
 
         //Initialize form data
@@ -151,7 +172,18 @@ class FormManager extends React.Component {
                     this.setState({
                         currentState: formState.edit,
                         data: data,
-                        id: id
+                        id: id,
+                        name: this.state.responseData['name'],
+                        creatorId: this.state.responseData['creatorId'],
+                        creatorName: this.state.responseData['creatorName'],
+                        created: hasStringValue(this.state.responseData['created']) ? new Date(this.state.responseData['created']) : null,
+                        editorId: this.state.responseData['editorId'],
+                        editorName: this.state.responseData['editorName'],
+                        edited: hasStringValue(this.state.responseData['edited']) ? new Date(this.state.responseData['edited']) : null,
+                        log: this.state.responseData['log'].map(row => {
+                            row.timeStamp = new Date(row.timeStamp);
+                            return row;
+                        })
                     }, () => {
                         this.validate();
                     });
@@ -373,15 +405,45 @@ class FormManager extends React.Component {
             body: body,
             callback: (success, data) => {
                 if (success) {
+                    //Form saved
+                    //Show toast message
                     var toastMessage = this.state.currentState === formState.new ? localization.FormSavedToastMessageNew : localization.FormSavedToastMessagePreExisting;
                     toastMessage = toastMessage.replace('[name]', hasStringValue(this.props.title) ? this.props.title.toLowerCase() : '???');
                     this.toast.current.show({
                         title: localization.FormSavedToastTitle,
                         message: toastMessage
                     });
+
+                    //Update creator and editor
+                    var creatorId = this.state.creatorId;
+                    var creatorName = this.state.creatorName;
+                    var created = this.state.created;
+                    var editorId = this.state.editorId;
+                    var editorName = this.state.editorName;
+                    var edited = this.state.edited;
+
+                    if (this.state.currentState === formState.new) {
+                        //New form created
+                        creatorId = user.id;
+                        creatorName = user.userName;
+                        created = new Date();
+                    } else {
+                        //Changes saved
+                        editorId = user.id;
+                        editorName = user.userName;
+                        edited = new Date();
+                    }
+
+                    //Set new state
                     this.setState({
                         id: data,
-                        currentState: formState.edit
+                        currentState: formState.edit,
+                        creatorId: creatorId,
+                        creatorName: creatorName,
+                        created: created,
+                        editorId: editorId,
+                        editorName: editorName,
+                        edited: edited
                     });
                 } else {
                     //Error
@@ -409,6 +471,18 @@ class FormManager extends React.Component {
                     }
                 }
             }
+        });
+    }
+
+    handleLogClick() {
+        this.setState({
+            logModalOpen: true
+        });
+    }
+
+    handleLogModalCloseClick() {
+        this.setState({
+            logModalOpen: false
         });
     }
 
@@ -504,11 +578,61 @@ class FormManager extends React.Component {
         this.logError('Input type not implemented: "' + type + '"');
     }
 
+    /**
+     * @param {Date} timestamp
+     * @param {string} userName
+     * @returns {string}
+     */
+    parseUserData(timestamp, userName) {
+        if (timestamp === null) {
+            return (
+                <>
+                    <td>-</td>
+                    <td></td>
+                </>
+            );
+        }
+        return (
+            <>
+                <td>{timestamp.toLocaleString()}</td>
+                <td>{userName}</td>
+            </>
+        );
+    }
+
     render() {
         var rows = this.getRows();
 
         return (
-            <div>
+            <div className="form-container">
+                <h2 className="form-title">
+                    {this.state.currentState === formState.new ? (localization.New + ' ' + (hasStringValue(this.props.title) ? this.props.title.toLowerCase() : '???')) : this.state.name}
+                </h2>
+                {
+                    this.state.created !== null || this.state.edited !== null ?
+                        <div className="form-user-data">
+                            <table>
+                                <tr>
+                                    <td className="form-user-data-header">
+                                        {localization.Created + ':'}
+                                    </td>
+                                    {this.parseUserData(this.state.created, this.state.creatorName)}
+                                </tr>
+                                <tr>
+                                    <td className="form-user-data-header">
+                                        {localization.Edited + ':'}
+                                    </td>
+                                    {this.parseUserData(this.state.edited, this.state.editorName)}
+                                </tr>
+                            </table>
+                            {
+                                this.state.edited === null ? null :
+                                    <button className="btn btn-info btn-sm" onClick={() => { this.handleLogClick(); }}>
+                                        {localization.Log}
+                                    </button>
+                            }
+                        </div> : null
+                }
                 {this.state.error ? <div className="alert alert-warning" role="alert">{localization.GenericErrorMessage}</div> : null}
                 <form>
                     {rows.map((row, index) => this.renderRow(row, index))}
@@ -521,6 +645,43 @@ class FormManager extends React.Component {
                     }
                 ]} />
                 <Toast ref={this.toast} />
+                <Modal open={this.state.logModalOpen} title={localization.Log} onCloseClick={() => { this.handleLogModalCloseClick(); }}>
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">{localization.Time}</th>
+                                <th scope="col">{localization.User}</th>
+                                <th scope="col">{localization.Message}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.state.log.map((row) => {
+                                var text = row.text;
+                                for (var i = 0; i < rows.length; i++) {
+                                    for (var j = 0; j < rows[i].inputs.length; j++) {
+                                        var input = rows[i].inputs[j];
+                                        if (text.startsWith('[' + input.property.toLowerCase() + ']')) {
+                                            text = text.replace('[' + input.property.toLowerCase() + ']', input.label);
+                                        }
+                                    }
+                                }
+                                return (
+                                    <tr>
+                                        <td>
+                                            {row.timeStamp.toLocaleString()}
+                                        </td>
+                                        <td>
+                                            {row.userName}
+                                        </td>
+                                        <td>
+                                            {text}
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </Modal>
             </div>
         );
     }

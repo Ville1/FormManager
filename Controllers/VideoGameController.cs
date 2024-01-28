@@ -34,6 +34,7 @@ namespace FormManager.Controllers
         public ActionResult Form()
         {
             SetViewBagDropdownValues();
+            SetViewBagCurrentUser();
             return View();
         }
 
@@ -55,9 +56,9 @@ namespace FormManager.Controllers
 
             //Get results
             IEnumerable<VideoGame> games = DB.VideoGames.Search(filters.IsMatch);
-            IEnumerable<VideoGame> paginatedResults = search.Paginate(games);
+            List<VideoGame> paginatedResults = search.Paginate(games);
 
-            return Json(new ListResponse<VideoGameResponseDataShort>(paginatedResults.Select(x => x.ToResponseShort()), games.Count(), search.PageSize));
+            return Json(new ListResponse<VideoGameResponseDataShort>(paginatedResults.Select(x => x.ToResponseShort(DB)), games.Count(), search.PageSize));
         }
 
         /// <summary>
@@ -72,7 +73,7 @@ namespace FormManager.Controllers
                 //Video game with this id does not exist
                 return StatusCode(404);
             }
-            return Json(DB.VideoGames.Get(id).ToResponse());
+            return Json(DB.VideoGames.Get(id).ToResponse(DB));
         }
 
         /// <summary>

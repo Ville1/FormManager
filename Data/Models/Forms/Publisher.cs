@@ -1,5 +1,6 @@
 ﻿using FormManager.Data.HttpData.Request;
 using FormManager.Data.HttpData.Response;
+using FormManager.Services;
 
 namespace FormManager.Data.Models.Forms
 {
@@ -8,10 +9,11 @@ namespace FormManager.Data.Models.Forms
         public string Name { get; set; } = string.Empty;
         public ICollection<VideoGame> VideoGames { get; set; } = new List<VideoGame>();
 
-        public PublisherResponseData ToResponse()
+        public PublisherResponseData ToResponse(DatabaseService database)
         {
             PublisherResponseData response = new PublisherResponseData();
-            SetHttpData(response);
+            SetHttpData(response, database);
+            SetHttpResponseLogData(response, database);
             response.Name = Name;
             return response;
         }

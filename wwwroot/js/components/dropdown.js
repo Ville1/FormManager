@@ -82,6 +82,7 @@ class Dropdown extends React.Component {
                     id={this.state.elementId}
                     aria-describedby={this.props.errorMessage ? helpTextId : undefined}
                     value={selected !== undefined ? selected.id : this.emptyOptionId}
+                    onChange={() => { /* Empty callback to so React does not complain about value prop without onChange **/ }}
                 >
                     {
                         options.map((option, index) => {

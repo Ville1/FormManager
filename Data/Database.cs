@@ -15,6 +15,9 @@ namespace FormManager.Data
             modelBuilder.Entity<Form>().ToTable("Forms");
             modelBuilder.Entity<VideoGame>().ToTable("VideoGames");
 
+            //Ignore form log, this is loaded in the ManagerBase
+            modelBuilder.Entity<Form>().Ignore(x => x.Log);
+
             base.OnModelCreating(modelBuilder);
         }
 

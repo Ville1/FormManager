@@ -135,8 +135,14 @@
   <data name="ConfirmDeleteModalTitle" xml:space="preserve">
     <value>Poista [name]</value>
   </data>
+  <data name="Created" xml:space="preserve">
+    <value>Luotu</value>
+  </data>
   <data name="Delete" xml:space="preserve">
     <value>Poista</value>
+  </data>
+  <data name="DeletedUser" xml:space="preserve">
+    <value>Poistettu käyttäjä</value>
   </data>
   <data name="DeleteErrorMessageUsedBy" xml:space="preserve">
     <value>Käytössä: [type] [name]</value>
@@ -152,6 +158,9 @@
   </data>
   <data name="Edit" xml:space="preserve">
     <value>Muokkaa</value>
+  </data>
+  <data name="Edited" xml:space="preserve">
+    <value>Muokattu</value>
   </data>
   <data name="Email" xml:space="preserve">
     <value>Sähköposti</value>
@@ -186,14 +195,23 @@
   <data name="Loading" xml:space="preserve">
     <value>Ladataan</value>
   </data>
+  <data name="Log" xml:space="preserve">
+    <value>Loki</value>
+  </data>
   <data name="Login" xml:space="preserve">
     <value>Kirjaudu sisään</value>
   </data>
   <data name="Logout" xml:space="preserve">
     <value>Kirjaudu ulos</value>
   </data>
+  <data name="Message" xml:space="preserve">
+    <value>Viesti</value>
+  </data>
   <data name="MissingRequiredData" xml:space="preserve">
     <value>Pakollisia tietoja puuttuu</value>
+  </data>
+  <data name="MissingUserName" xml:space="preserve">
+    <value>Puuttuva käyttäjätunnus</value>
   </data>
   <data name="Name" xml:space="preserve">
     <value>Nimi</value>
@@ -221,6 +239,15 @@
   </data>
   <data name="Save" xml:space="preserve">
     <value>Tallenna</value>
+  </data>
+  <data name="System" xml:space="preserve">
+    <value>Järjestelmä</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Aika</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>Käyttäjä</value>
   </data>
   <data name="ValidationError" xml:space="preserve">
     <value>Validaatiovirhe</value>
